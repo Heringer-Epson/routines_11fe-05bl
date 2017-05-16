@@ -1,0 +1,9 @@
+#Ignore most of the folders - to remain empty in the repository.
+./Notes
+./data/*
+./OUTPUT_FILES/*
+./OUTPUT_FILES/FIGURES/*
+
+#Except blank .gitkeep files, necessary to add empty folders to GitHub.
+./data/.gitkeep
+./OUTPUT_FILES/FIGURES/.gitkeep
