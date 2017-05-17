@@ -371,7 +371,7 @@ class BSNIP_database(object):
         print self.df
         print self.df['pEW_f7'],self.df['pEW_unc_f7']
 
-BSNIP_object = BSNIP_database()
-#BSNIP_object = BSNIP_database(subset_objects_idx=[288])
+#BSNIP_object = BSNIP_database()
+BSNIP_object = BSNIP_database(subset_objects_idx=[288])
 #BSNIP_object = BSNIP_database(subset_objects_idx=np.arange(100,200,1))
 
