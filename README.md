@@ -10,4 +10,7 @@
     
     e.g.:
     path_tardis_output="/home/heringer/Research/TARDIS-bundle/OUTPUT_FILES/"
+    
+    To run this code, some specific TARDIS simulations are required to exist
+    in the path_tardis_output.
        
