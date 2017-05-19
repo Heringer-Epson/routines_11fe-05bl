@@ -93,11 +93,11 @@ class Compare_Spectra(object):
 
         #Define path variables.
         path_syn_11fe = (path_tardis_output + '11fe_standard_'
-                         + self.line_mode + '_lowSN/')                        
+                         + self.line_mode + '/')                        
         path_syn_05bl = (path_tardis_output + '05bl_standard_'
-                         + self.line_mode + '_lowSN/')                       
-        path_obs_11fe = ('./../INPUT_FILES/observational_spectra/2011fe/')
-        path_obs_05bl = ('./../INPUT_FILES/observational_spectra/2005bl/')
+                         + self.line_mode + '/')                       
+        path_obs_11fe = './../INPUT_FILES/observational_spectra/2011fe/'
+        path_obs_05bl = './../INPUT_FILES/observational_spectra/2005bl/'
                                                   
         """11fe -> 05bl spectra"""
 
@@ -179,7 +179,7 @@ class Compare_Spectra(object):
                       + '8.93_time_explosion-12.0.pkl',      
                     path_syn_05bl + 'velocity_start-8100_loglum-'
                       + '8.63_time_explosion-12.0.pkl',          
-                    path_obs_05bl + '2005_05_04.pkl']        
+                    path_obs_05bl + '2005_04_17.pkl']        
                 
         for pkl_path in aux_list:
             with open(pkl_path, 'r') as inp:
@@ -228,7 +228,7 @@ class Compare_Spectra(object):
     def plotting_11fe_to_05bl(self):
         """Plot the left panel"""
        
-        offset_lvl = -0.8
+        offset_lvl = -1.1
         offset = [0., 0., 1.*offset_lvl, 2.*offset_lvl, 2.*offset_lvl,
                   3.*offset_lvl, 3.*offset_lvl, 4.*offset_lvl, 4.*offset_lvl]
         color = ['k', 'b', 'b', 'b', 'r', 'b', 'r', 'g', 'r']
@@ -263,7 +263,7 @@ class Compare_Spectra(object):
         
     def plotting_05bl_to_11fe(self):
         """Plot the right panel"""
-        offset_lvl = -0.8
+        offset_lvl = -1.1
         offset = [0., 0., 1.*offset_lvl, 1.*offset_lvl, 2.*offset_lvl,
                   2.*offset_lvl, 3.*offset_lvl, 4.*offset_lvl, 4.*offset_lvl]
         color = ['k', 'b', 'k', 'g', 'k', 'g', 'g', 'g', 'r']
@@ -286,12 +286,21 @@ class Compare_Spectra(object):
             self.ax2.plot(wavelength, flux_normalized, color=color[i],
                           linewidth=2., alpha=alpha[i])
 
-        for i, pkl in enumerate(self.right_bot):      
+        for i, pkl in enumerate(self.right_bot):
+  
             wavelength = np.asarray(
               pkl['wavelength_raw'].tolist()[0]).astype(np.float)
-            flux_normalized = (np.asarray(
-              pkl['flux_normalized'].tolist()[0]).astype(np.float)
-              + offset[i] + 14. * offset_lvl)
+            if i == 7:
+                flux_normalized = (np.asarray(
+                  pkl['flux_normalized'].tolist()[0]).astype(np.float))
+                flux_normalized = flux_normalized / 2.  + offset[i] + 14. * offset_lvl          
+            
+            else:
+                flux_normalized = (np.asarray(
+                  pkl['flux_normalized'].tolist()[0]).astype(np.float)
+                  + offset[i] + 14. * offset_lvl)
+
+
             self.ax2.plot(wavelength, flux_normalized, color=color[i],
                           linewidth=2., alpha=alpha[i])
         

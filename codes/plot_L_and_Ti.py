@@ -267,9 +267,9 @@ class L_Grid(object):
                + 'low brightnesses: ', np.mean(np.asarray(
                [T1-T2 for (T1,T2) in zip(T_bright,T_faint)])))
             
-    def save_figure(self, directory='./../OUTPUT_FILES/FIGURES/',
-                    extension='pdf', dpi=360):
-                        
+    def save_figure(self, extension='pdf', dpi=360):
+                
+        directory = './../OUTPUT_FILES/FIGURES/'
         if self.save_fig:
             if self.show_pEW:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
