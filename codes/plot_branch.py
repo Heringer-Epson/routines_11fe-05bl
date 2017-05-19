@@ -106,7 +106,7 @@ class Feature_Parspace(Get_BSNIP):
         self.show_fig = show_fig
         self.save_fig = save_fig
                 
-        self.L_array = list(np.logspace(8.544, 9.72, 40))
+        self.L_array = list(np.logspace(8.544, 9.72, 40))[::-1]
                
         self.list_label_11fe, self.list_label_05bl = [], []
         self.list_pkl_11fe, self.list_L_05bl = [], []
@@ -119,7 +119,7 @@ class Feature_Parspace(Get_BSNIP):
         
     def set_fig_frame(self):
        
-        self.ax.set_xlabel(r'pEW \ $\mathrm{[\AA]}$ of '
+        self.ax.set_xlabel(r'pEW $\mathrm{[\AA]}$ of '
           + r'$\rm{Si}\,\mathrm{II} \ \lambda$6355' ,fontsize=self.fs_label) 
         self.ax.set_ylabel(r'pEW $\mathrm{[\AA]}$ of '
           + r'$\rm{Si}\,\mathrm{II} \ \lambda$5972' ,fontsize=self.fs_label)        
@@ -193,10 +193,9 @@ class Feature_Parspace(Get_BSNIP):
 
     def add_11fe_synthetic_spectra(self):
 
-
-        path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
+        #path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
+        path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode + '_old')        
         
-
         cmap_L = cmaps.viridis
         Norm_L = colors.Normalize(vmin=0., vmax=len(self.L_array) + 11.)                 
 
@@ -207,9 +206,9 @@ class Feature_Parspace(Get_BSNIP):
             L_str = str(format(np.log10(L), '.2f')) + '.pkl'        
             with open(path_data_11fe + '/loglum-' + L_str, 'r') as inp:
                 pkl = cPickle.load(inp)
-                #list_pkl_11fe.append(cPickle.load(inp))
-
- 
+                
+                print 'here', L_str, pkl['pEW_f7'].tolist()[0], pkl['pEW_f6'].tolist()[0]
+                
                 list_x = np.asarray(pkl['pEW_f7'].tolist()).astype(np.float)
                 
                 list_x_unc = 1.2 * np.asarray(
@@ -393,7 +392,7 @@ class Feature_Parspace(Get_BSNIP):
         for (subtype,marker) in zip(subtypes,markers):
             self.ax.errorbar([np.nan], [np.nan], xerr=[np.nan], yerr=[np.nan],
                              ls='None', marker=marker, color='gray', alpha=0.5,
-                             markersize=9.,label=subtype)        
+                             markersize=9., capsize=0., label=subtype)        
         
         self.ax.legend(frameon=True, fontsize=20., numpoints=1, ncol=1,
                        handletextpad=0.2, labelspacing=0.05, loc=2)

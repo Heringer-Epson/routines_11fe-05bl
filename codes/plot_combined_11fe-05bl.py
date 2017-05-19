@@ -434,7 +434,7 @@ class Compare_Spectra(object):
 
     def save_figure(self, extension='pdf', dpi=360):
         if self.save_fig:
-            plt.savefig('./../OUTPUT_FILES/FIGURES/Fig_combined_11fe_05bl_transition_'+self.line_mode+extension, format=extension, dpi=dpi)
+            plt.savefig('./../OUTPUT_FILES/FIGURES/Fig_combined_11fe_05bl_transition_'+self.line_mode+'.'+extension, format=extension, dpi=dpi)
         return None
         
     def show_figure(self):
@@ -451,12 +451,12 @@ class Compare_Spectra(object):
         #self.add_text_ax1()
         #self.add_text_ax2()
         #self.add_legend()
-        #self.save_figure()
+        self.save_figure()
         self.show_figure()  
         return None         
 
 
 compare_spectra_object = Compare_Spectra(line_mode='downbranch', show_fig=True,
-                                         save_fig=False)
+                                         save_fig=True)
 
 

@@ -348,7 +348,7 @@ class BSNIP_database(object):
                           verbose=True).run_analysis()        
 
         self.df = Compute_Uncertainty(self.df, smoothing_window=51,
-                                      N_MC_runs=3000).run_uncertainties()     
+                                      N_MC_runs=300).run_uncertainties()     
 
     def save_output(self):
         print '\n*SAVING OUTPUT AS PICKLE AT OUTPUT_FILES/',
