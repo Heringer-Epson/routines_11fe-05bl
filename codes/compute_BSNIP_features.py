@@ -4,14 +4,20 @@ import os
 import time
 
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 import pandas as pd   
 import csv
 from astropy import constants as const
+from matplotlib.ticker import MultipleLocator
 
-from tardis.tardistools.compute_features import Analyse_Spectra
-from tardis.tardistools.compute_features import Compute_Uncertainty
+import tardis.tardistools.compute_features as cp
 
-class BSNIP_database(object):
+mpl.rcParams['mathtext.fontset'] = 'stix'
+mpl.rcParams['mathtext.fontset'] = 'stix'
+mpl.rcParams['font.family'] = 'STIXGeneral'
+
+class BSNIP_Database(object):
     """Collects data from the the BSNIP program to create a .pkl file with the
     relevant information. Spectral features are re-computed.
     
@@ -32,9 +38,12 @@ class BSNIP_database(object):
     smoothing_window=51, N_MC_runs=3000.
     """
     
-    def __init__(self, subset_objects_idx=None):
+    def __init__(self, filename='BSNIP', subset_objects_idx=None,
+                 make_figures=False):
         
+        self.filename = filename
         self.subset_objects_idx = subset_objects_idx
+        self.make_figures = make_figures
                 
         os.system('clear')      
         self.time_BSNIP = time.time()
@@ -42,6 +51,13 @@ class BSNIP_database(object):
         self.BSNIP_fp = './../data/BSNIP_I/'
         self.BSNIP_spectra_fp = self.BSNIP_fp + 'paper_I/Spectra_database/'      
         self.df = None
+
+        self.fs_label = 26
+        self.fs_ticks = 26
+        self.fs_legend = 20
+        self.fs_text = 22
+        self.fs_as = 24
+        self.fs_feature = 14
     
         self.run_BSNIP_database()
    
@@ -344,18 +360,22 @@ class BSNIP_database(object):
         """Use the 'compute_features' routine in 'tardistools' to compute
         the pEW, velocity and depth of features in BSNIP.
         """
-        self.df = Analyse_Spectra(self.df, smoothing_window=51,
-                          verbose=True).run_analysis()        
+        self.df = cp.Analyse_Spectra(self.df, smoothing_window=51,
+                                     verbose=True).run_analysis()        
 
-        self.df = Compute_Uncertainty(self.df, smoothing_window=51,
-                                      N_MC_runs=300).run_uncertainties()     
-
+        #self.df = cp.Compute_Uncertainty(self.df, smoothing_window=51,
+        #                                  N_MC_runs=300).run_uncertainties()     
+ 
+        if self.make_figures:
+            directory = './../OUTPUT_FILES/' + self.filename + 'figs/'
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            cp.Plot_Spectra(self.df, out_dir=directory, show_fig=True,
+                            save_fig=False)
+   
     def save_output(self):
-        print '\n*SAVING OUTPUT AS PICKLE AT OUTPUT_FILES/',
-        start_time = time.time()
-        self.df.to_pickle('./../OUTPUT_FILES/BSNIP_test.pkl')
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)\n\n'
-
+        self.df.to_pickle('./../OUTPUT_FILES/' + self.filename + '.pkl')
+        
     def run_BSNIP_database(self):
         self.initialize_dataframe_and_get_spectra()
         self.read_general_info()
@@ -363,15 +383,12 @@ class BSNIP_database(object):
         self.read_types()
         self.read_features()
         self.trim_by_phase_and_indexes()
-        print ("    -TOTAL TIME ELAPSED COLLECTING BSNIP DATA: "
-               + str(format(time.time() - self.time_BSNIP, '.1f')) + 's')     
-        print '    *** COLLECTING BSNIP DATA FINISHED SUCCESSFULLY ***'
         self.compute_observables()
         self.save_output()
-        print self.df
-        print self.df['pEW_f7'],self.df['pEW_unc_f7']
 
-BSNIP_object = BSNIP_database()
-#BSNIP_object = BSNIP_database(subset_objects_idx=[288])
-#BSNIP_object = BSNIP_database(subset_objects_idx=np.arange(100,200,1))
+#BSNIP_object = BSNIP_Database()
+BSNIP_object = BSNIP_Database(filename='BSNIP_test2', subset_objects_idx=[288],
+                              make_figures=True)
+#BSNIP_object = BSNIP_Database(subset_objects_idx=np.arange(100,200,1),
+#                              make_figures=True)
 

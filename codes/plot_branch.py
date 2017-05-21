@@ -12,7 +12,6 @@ import cPickle
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import pylab
 from matplotlib.ticker import MultipleLocator
 from matplotlib import cm
 from matplotlib import colors
@@ -397,8 +396,7 @@ class Feature_Parspace(Get_BSNIP):
         self.ax.legend(frameon=True, fontsize=20., numpoints=1, ncol=1,
                        handletextpad=0.2, labelspacing=0.05, loc=2)
 
-    def save_figure(self, extension='pdf', dpi=360):
-        
+    def save_figure(self, extension='pdf', dpi=360):        
         directory = './../OUTPUT_FILES/FIGURES/'
         if self.save_fig:
             plt.savefig(directory + 'Fig_parspace_' + self.line_mode + '.'
@@ -407,7 +405,6 @@ class Feature_Parspace(Get_BSNIP):
     def show_figure(self):
         if self.show_fig:
             plt.show()
-        return None
         
     def run_parspace(self):
         self.set_fig_frame()

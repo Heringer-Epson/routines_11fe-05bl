@@ -293,7 +293,7 @@ class L_Grid(object):
         self.show_figure()  
 
 compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
-                                show_pEW=False, show_fig=True, save_fig=True)
+                                show_pEW=True, show_fig=True, save_fig=False)
 
 '''
 Run and save all options
