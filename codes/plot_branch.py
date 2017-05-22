@@ -84,15 +84,7 @@ def colorline(x, y, z, cmap, norm, linestyle, linewidth, alpha, zorder):
 
 class Get_BSNIP(object):
     def __init__(self):
-
-        self.fs_label = 26
-        self.fs_ticks = 26
-        self.fs_legend = 20
-        self.fs_text = 22
-        self.fs_as = 24
-        self.fs_feature = 14
-
-        with open('./../OUTPUT_FILES//BSNIP_test.pkl', 'r') as inp:
+        with open('./../OUTPUT_FILES//BSNIP.pkl', 'r') as inp:
             self.df_BSNIP = cPickle.load(inp)
                    
 class Feature_Parspace(Get_BSNIP):
@@ -113,7 +105,14 @@ class Feature_Parspace(Get_BSNIP):
         self.FIG = plt.figure(figsize=(10, 10))
         self.ax = plt.subplot(111)  
         self.color_11fe = None
-           
+
+        self.fs_label = 26
+        self.fs_ticks = 26
+        self.fs_legend = 20
+        self.fs_text = 22
+        self.fs_as = 24
+        self.fs_feature = 14
+                   
         self.run_parspace()
         
     def set_fig_frame(self):
@@ -193,7 +192,7 @@ class Feature_Parspace(Get_BSNIP):
     def add_11fe_synthetic_spectra(self):
 
         #path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
-        path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode + '_old')        
+        path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
         
         cmap_L = cmaps.viridis
         Norm_L = colors.Normalize(vmin=0., vmax=len(self.L_array) + 11.)                 
@@ -205,9 +204,7 @@ class Feature_Parspace(Get_BSNIP):
             L_str = str(format(np.log10(L), '.2f')) + '.pkl'        
             with open(path_data_11fe + '/loglum-' + L_str, 'r') as inp:
                 pkl = cPickle.load(inp)
-                
-                print 'here', L_str, pkl['pEW_f7'].tolist()[0], pkl['pEW_f6'].tolist()[0]
-                
+                                
                 list_x = np.asarray(pkl['pEW_f7'].tolist()).astype(np.float)
                 
                 list_x_unc = 1.2 * np.asarray(

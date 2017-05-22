@@ -363,15 +363,15 @@ class BSNIP_Database(object):
         self.df = cp.Analyse_Spectra(self.df, smoothing_window=51,
                                      verbose=True).run_analysis()        
 
-        #self.df = cp.Compute_Uncertainty(self.df, smoothing_window=51,
-        #                                  N_MC_runs=300).run_uncertainties()     
+        self.df = cp.Compute_Uncertainty(self.df, smoothing_window=51,
+                                          N_MC_runs=3000).run_uncertainties()     
  
         if self.make_figures:
-            directory = './../OUTPUT_FILES/' + self.filename + 'figs/'
+            directory = './../OUTPUT_FILES/' + self.filename + '_figs/'
             if not os.path.exists(directory):
                 os.makedirs(directory)
-            cp.Plot_Spectra(self.df, out_dir=directory, show_fig=True,
-                            save_fig=False)
+            cp.Plot_Spectra(self.df, out_dir=directory, show_fig=False,
+                            save_fig=True)
    
     def save_output(self):
         self.df.to_pickle('./../OUTPUT_FILES/' + self.filename + '.pkl')
@@ -386,9 +386,15 @@ class BSNIP_Database(object):
         self.compute_observables()
         self.save_output()
 
-#BSNIP_object = BSNIP_Database()
-BSNIP_object = BSNIP_Database(filename='BSNIP_test2', subset_objects_idx=[288],
-                              make_figures=True)
+#BSNIP_object = BSNIP_Database(filename='BSNIP_small', make_figures=False)
+BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=False)
+
+#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,400,1), make_figures=True)
+#
+
+#BSNIP_object = BSNIP_Database(filename='BSNIP_test3', subset_objects_idx=[1151, 518],
+#                              make_figures=True)
+
 #BSNIP_object = BSNIP_Database(subset_objects_idx=np.arange(100,200,1),
 #                              make_figures=True)
 

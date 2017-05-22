@@ -8,7 +8,6 @@ import cPickle
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import pylab
 import itertools
 from matplotlib.ticker import MultipleLocator
                                                         
@@ -35,7 +34,7 @@ def flag2filling(flag_list):
     
 class get_BSNIP(object):
     def __init__(self):
-        with open('./../OUTPUT_FILES/BSNIP_test.pkl', 'r') as inp:
+        with open('./../OUTPUT_FILES/BSNIP.pkl', 'r') as inp:
             self.df_BSNIP = cPickle.load(inp)
             self.keys = ['6', '7']
             self.keys_to_fit = ['6', '7']
@@ -202,9 +201,12 @@ class Compare_Feature(get_BSNIP):
 
     def save_figure(self, extension='pdf', dpi=360):
         if self.save_fig:
-            fig_name = 'compare_' + self.feature + '_f' + self.key
-            plt.savefig('./../OUTPUT_FILES/FIGURES/Fig_' + fig_name + '.'
-                        + extension, format=extension, dpi=dpi)
+            try:
+                fig_name = 'compare_' + self.feature + '_f' + self.key
+                plt.savefig('./../OUTPUT_FILES/FIGURES/Fig_' + fig_name + '.'
+                            + extension, format=extension, dpi=dpi)
+            except:
+                pass             
         
     def show_figure(self):
         if self.show_fig:
@@ -218,8 +220,8 @@ class Compare_Feature(get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()
         
-#Compare_Feature(feature='pEW', key='7', feature_range=[0., 200.],
-#                show_fig=True, save_fig=False) 
+Compare_Feature(feature='pEW', key='7', feature_range=[0., 200.],
+                show_fig=True, save_fig=False) 
 
 #Compare_Feature(feature='pEW', key='6', feature_range=[0., 70.],
 #                show_fig=True, save_fig=False)                                      
