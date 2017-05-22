@@ -191,7 +191,6 @@ class Feature_Parspace(Get_BSNIP):
 
     def add_11fe_synthetic_spectra(self):
 
-        #path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
         path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
         
         cmap_L = cmaps.viridis
@@ -236,7 +235,7 @@ class Feature_Parspace(Get_BSNIP):
                         self.ax.errorbar(
                           list_x, list_y, xerr=list_x_unc,yerr=list_y_unc,
                           ls='None', marker='D', markersize=10.,
-                          fillstyle=filling, capsize=0., color=color, zorder=4)                       
+                          fillstyle=filling, capsize=0., color=color, zorder=6)                       
                         
                         self.color_11fe = color
                         
@@ -247,47 +246,52 @@ class Feature_Parspace(Get_BSNIP):
         
         lc = colorline(x_list_line, y_list_line, z=z_list_line, cmap=cmap_L,
                        norm=Norm_L, linestyle='-', linewidth=2., alpha=1.0,
-                       zorder=1)
+                       zorder=5)
        
         self.ax.add_collection(lc)
-    
-    """
+
     def add_05bl_synthetic_spectra(self):           
+        path_data_05bl = (path_tardis_output + '05bl_Lgrid_' + self.line_mode)        
+        
+        list_pkl_05bl = []
+        x_list, x_unc_list, x_flag_list = [], [], []
+        y_list, y_unc_list, y_flag_list = [], [], []
 
-        list_pkl_05bl, label_05bl = [], []
-        for pkl_path in self.list_syn_pkl_05bl:
-            with open(pkl_path, 'r') as inp:
-                list_pkl_05bl.append(cPickle.load(inp))
-                self.list_label_05bl.append(
-                  pkl_path.split('/')[-1].split('.pkl')[0])
-    
-        x_list_line, y_list_line, z_list_line = [], [], []
-    
-        for i, (pkl,L) in enumerate(zip(list_pkl_05bl,self.list_L_05bl)):
-
-            list_x                                                      = np.asarray(pkl[self.x_feature+'_f'+self.x_key].tolist()).astype(np.float)
-            list_x_unc                                                  = 1.2*np.asarray(pkl[self.x_feature+'_unc_f'+self.x_key].tolist()).astype(np.float)
-            list_x_flag                                                 = np.asarray(pkl[self.x_feature+'_flag_f'+self.x_key].tolist()).astype(np.float)
-                    
-            list_y                                                      = np.asarray(pkl[self.y_feature+'_f'+self.y_key].tolist()).astype(np.float)
-            list_y_unc                                                  = 1.2*np.asarray(pkl[self.y_feature+'_unc_f'+self.y_key].tolist()).astype(np.float)
-            list_y_flag                                                 = np.asarray(pkl[self.y_feature+'_flag_f'+self.y_key].tolist()).astype(np.float)
+        for i, L in enumerate(self.L_array):
+            L_str = str(format(np.log10(L), '.2f')) + '.pkl'        
+            with open(path_data_05bl + '/loglum-' + L_str, 'r') as inp:
+                pkl = cPickle.load(inp)
                 
-            filling                                                     = 'full' if (list_x_flag != 1. and list_y_flag != 1.) else 'none'
-            #print 'item', i, 'L', self.list_L[i]/3.5e9, 'filling', filling
-            
-            if filling == 'full': #This condition alone (no restrain in L/3.5e9) will also include the L/3.5e9 = 0.264 case, where a 'v' starts to form on the left shoulder of the Si_II 6355A feature. 
-                if  L/3.5e9 <= 1.05 and L/3.5e9 > 0.18:
-                    x_list_line.append(pkl[self.x_feature+'_f'+self.x_key].tolist())
-                    y_list_line.append(pkl[self.y_feature+'_f'+self.y_key].tolist())
-                    z_list_line.append(i)
-                                    
-                    self.ax.errorbar(list_x,list_y,xerr=list_x_unc,yerr=list_y_unc,ls='None',marker='p',markersize=14.,fillstyle=filling,capsize=0.,color='g',zorder=3)                     
+                x_flag_list = np.asarray(
+                  pkl['pEW_flag_f7'].tolist()).astype(np.float)
+                
+                y_flag_list = np.asarray(
+                  pkl['pEW_flag_f6'].tolist()).astype(np.float)
                     
-        #PLot line 
-        self.ax.plot(x_list_line, y_list_line, ls=':', marker='None', color='g', zorder=1)
-    """
-    
+                filling = ('full' if (x_flag_list != 1. and y_flag_list != 1.)
+                           else 'none')
+                                           
+                if filling == 'full': 
+                    #Do not include objects where the features start to blend.
+                    if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
+                        
+                        x = float(pkl['pEW_f7'].tolist()[0])
+                        y = float(pkl['pEW_f6'].tolist()[0])
+                        x_err = float(pkl['pEW_unc_f7'].tolist()[0])
+                        y_err = float(pkl['pEW_unc_f6'].tolist()[0])
+                        
+                        x_list.append(x)
+                        y_list.append(y)
+                        x_unc_list.append(1.2 * x_err)
+                        y_unc_list.append(1.2 * y_err)                                        
+                
+                        self.ax.errorbar(
+                          x, y, xerr=x_err, yerr=y_err,
+                          ls='-', marker='p', markersize=14.,
+                          fillstyle=filling, capsize=0., color='g', zorder=4)
+                          
+                self.ax.plot(x_list, y_list, ls='-', color='g', marker='None',
+                             zorder=3)                                 
 
     def add_observational_spectra(self):
 
@@ -407,7 +411,7 @@ class Feature_Parspace(Get_BSNIP):
         self.set_fig_frame()
         self.plot_BSNIP()   
         self.add_11fe_synthetic_spectra()
-        #self.add_05bl_synthetic_spectra()
+        self.add_05bl_synthetic_spectra()
         self.add_observational_spectra()
         self.plot_boundary_lines()
         self.add_legend()

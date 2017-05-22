@@ -7,8 +7,7 @@ import cPickle
 import numpy as np
 import pandas as pd   
 
-from tardis.tardistools.compute_features import Analyse_Spectra
-from tardis.tardistools.compute_features import Compute_Uncertainty
+import tardis.tardistools.compute_features as cp
 
 class Analyse_Observational(object):
     """Takes observed spectra data (usually from WISEREP) and process it
@@ -55,13 +54,14 @@ class Analyse_Observational(object):
                 for key in self.inp_dict.keys():
                     D[key] = [self.inp_dict[key][i]]           
               
-                D = Analyse_Spectra(D, smoothing_mode='savgol',
+                D = cp.Analyse_Spectra(D, smoothing_mode='savgol',
                                     verbose=True).run_analysis()       
-                D = Compute_Uncertainty(D, N_MC_runs=3000).run_uncertainties()                
-           
+                D = cp.Compute_Uncertainty(D, N_MC_runs=3000).run_uncertainties()
+
+                cp.Plot_Spectra(D, show_fig=False, save_fig=False)                                
+                       
             outfile = filename.split('.dat')[0] + '.pkl'
             D.to_pickle(path_data+outfile)
-        return None
 
 files_11fe = ['2011fe/2011_08_25.dat', '2011fe/2011_08_28.dat',
               '2011fe/2011_08_31.dat', '2011fe/2011_09_03.dat',
@@ -77,14 +77,13 @@ redshift_11fe = 0.
 redshift_05bl = 0.02406
 redshift_07hj = 0.014 
 
-"""
+'''
 for inp_file in files_11fe:
     observational_dict_input = {
       'filenames': [inp_file], 'host_redshift': [redshift_11fe],
       'phase': [0.], 't_exp': [0.], 'L_bol': [0.], 'extinction': [np.nan]}                                                          
     run_observational_analysis = Analyse_Observational(
       inp_dict=observational_dict_input)
-"""
 
 for inp_file in files_05bl:
    observational_dict_input = {
@@ -92,6 +91,13 @@ for inp_file in files_05bl:
       'phase': [0.], 't_exp': [0.], 'L_bol': [0.], 'extinction': [np.nan]}                                                          
    run_observational_analysis = Analyse_Observational(
      inp_dict=observational_dict_input)
+'''
+
+observational_dict_input = {
+  'filenames': [files_05bl[3]], 'host_redshift': [redshift_05bl],
+  'phase': [0.], 't_exp': [0.], 'L_bol': [0.], 'extinction': [np.nan]}                                                          
+run_observational_analysis = Analyse_Observational(
+  inp_dict=observational_dict_input)
 
 #For other SNe use, e.g.:
 #observational_dict_input = {'filenames': ['2007hj/2007_09_04.dat'], 'host_redshift': [0.014], 'phase': [0.], 't_exp': [0.], 'L_bol': [0.], 'extinction': [np.nan]}                                                         
