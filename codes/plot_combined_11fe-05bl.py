@@ -249,7 +249,7 @@ class Compare_Spectra(object):
           
         text_date_down = [
           r'$t_{\mathrm{05bl}}=\mathrm{12 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{0.19} L_{\mathrm{11fe}}$',
+          + 'L_{\mathrm{05bl}}=\mathrm{0.18} L_{\mathrm{11fe}}$',
           r'$t_{\mathrm{05bl}}=\mathrm{21.8 \ d,} \ '
           + 'L_{\mathrm{05bl}}=\mathrm{0.22} L_{\mathrm{11fe}}$',
           r'$t_{\mathrm{05bl}}=\mathrm{29.9 \ d,} \ '
@@ -288,7 +288,7 @@ class Compare_Spectra(object):
                 try:
                     text_lvl = mean_flux(wavelength, flux_normalized, 1500., 2500.)
                     self.ax1.text(
-                      1700, text_lvl + offset_text,
+                      1700, text_lvl + offset_text - 0.15,
                       r'$\mathrm{' + str(format(pkl['t_inner'][0] ,'.0f')) + ' \ K}$',
                       fontsize=20., horizontalalignment='left', color=color[i])
                 except:
@@ -377,7 +377,7 @@ class Compare_Spectra(object):
                 try:
                     text_lvl = mean_flux(wavelength, flux_normalized, 1500., 2500.)
                     self.ax2.text(
-                      1700, text_lvl + offset_text,
+                      1700, text_lvl + offset_text - 0.15,
                       r'$\mathrm{' + str(format(pkl['t_inner'][0] ,'.0f')) + ' \ K}$',
                       fontsize=20., horizontalalignment='left', color=color[i])
                 except:
@@ -442,7 +442,7 @@ class Compare_Spectra(object):
         return None         
 
 
-compare_spectra_object = Compare_Spectra(line_mode='downbranch', show_fig=False,
-                                         save_fig=True)
+compare_spectra_object = Compare_Spectra(line_mode='downbranch',
+                                         show_fig=False, save_fig=True)
 
 

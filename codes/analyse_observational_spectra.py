@@ -56,7 +56,7 @@ class Analyse_Observational(object):
               
                 D = cp.Analyse_Spectra(D, smoothing_mode='savgol',
                                     verbose=True).run_analysis()       
-                D = cp.Compute_Uncertainty(D, N_MC_runs=3000).run_uncertainties()
+                D = cp.Compute_Uncertainty(D, N_MC_runs=100).run_uncertainties()
 
                 cp.Plot_Spectra(D, show_fig=False, save_fig=False)                                
                        
@@ -92,6 +92,12 @@ for inp_file in files_05bl:
    run_observational_analysis = Analyse_Observational(
      inp_dict=observational_dict_input)
 '''
+
+observational_dict_input = {
+  'filenames': [files_11fe[5]], 'host_redshift': [redshift_11fe],
+  'phase': [0.], 't_exp': [0.], 'L_bol': [0.], 'extinction': [np.nan]}                                                          
+run_observational_analysis = Analyse_Observational(
+  inp_dict=observational_dict_input)
 
 observational_dict_input = {
   'filenames': [files_05bl[3]], 'host_redshift': [redshift_05bl],

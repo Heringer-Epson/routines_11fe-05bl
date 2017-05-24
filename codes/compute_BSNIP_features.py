@@ -370,8 +370,8 @@ class BSNIP_Database(object):
             directory = './../OUTPUT_FILES/' + self.filename + '_figs/'
             if not os.path.exists(directory):
                 os.makedirs(directory)
-            cp.Plot_Spectra(self.df, out_dir=directory, show_fig=False,
-                            save_fig=True)
+            cp.Plot_Spectra(self.df, out_dir=directory, show_fig=True,
+                            save_fig=False)
    
     def save_output(self):
         self.df.to_pickle('./../OUTPUT_FILES/' + self.filename + '.pkl')
@@ -387,7 +387,7 @@ class BSNIP_Database(object):
         self.save_output()
 
 #BSNIP_object = BSNIP_Database(filename='BSNIP_small', make_figures=False)
-BSNIP_object = BSNIP_Database(filename='BSNIP_test', make_figures=False)
+BSNIP_object = BSNIP_Database(filename='BSNIP_test', subset_objects_idx=[136], make_figures=True)
 
 #BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,400,1), make_figures=True)
 #
