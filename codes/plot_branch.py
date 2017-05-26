@@ -97,7 +97,7 @@ class Feature_Parspace(Get_BSNIP):
         self.show_fig = show_fig
         self.save_fig = save_fig
                 
-        self.L_array = list(np.logspace(8.544, 9.72, 40))[::-1]
+        self.L_array = list(np.logspace(8.544, 9.72, 20))[::-1]
                
         self.list_label_11fe, self.list_label_05bl = [], []
         self.list_pkl_11fe, self.list_L_05bl = [], []
@@ -418,7 +418,7 @@ class Feature_Parspace(Get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()              
 
-parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=True,
-                                   save_fig=False)
+parspace_object = Feature_Parspace(line_mode='macroatom', show_fig=True,
+                                   save_fig=True)
 
 

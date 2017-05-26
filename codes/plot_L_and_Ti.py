@@ -58,7 +58,7 @@ class L_Grid(object):
         self.show_pEW = show_pEW
         self.show_fig = show_fig
         self.save_fig = save_fig 
-        self.L_array = list(np.logspace(8.544, 9.72, 40)[::-1][1::2])
+        self.L_array = list(np.logspace(8.544, 9.72, 20)[::-1])
         self.list_pkl, self.label = [], []  
         self.list_pkl_bright, self.list_pkl_faint = [], []
         self.FIG = plt.figure(figsize=(20,22))
@@ -121,12 +121,11 @@ class L_Grid(object):
                 self.list_pkl.append(cPickle.load(inp))
 
         """Load pkl files for the titanium grid."""
-        path_data = (path_tardis_output + '11fe_Ti_' + self.line_mode)
+        #path_data = (path_tardis_output + '11fe_Ti_' + self.line_mode)
+        #Ti plot not yet run with macroatom.
+        path_data = (path_tardis_output + '11fe_Ti_downbranch') 
         
-        #list_X_Ti = ['2000', '1500', '1000', '800', '600', '400', '200',
-        #             '100', '050', '020', '010', '005', '000']        
-
-        list_X_Ti = ['2000', '1000', '600', '200',
+        list_X_Ti = ['2000', '1000', '500', '200',
                      '100', '050', '020', '010', '005', '000']
                 
         for X_Ti in list_X_Ti:
@@ -208,10 +207,7 @@ class L_Grid(object):
         cmap_Ti = cmaps.plasma      
         Norm_Ti = colors.Normalize(vmin=0., vmax=len(self.list_pkl_bright) + 5.)
 
-        #models = ['20', '15', '10', '8', '6', '4', '2', '1', '0.5', '0.2',
-        #          '0.1', '0.05', '0']        
-
-        models = ['20', '10', '6', '2', '1', '0.5', '0.2',
+        models = ['20', '10', '5', '2', '1', '0.5', '0.2',
                   '0.1', '0.05', '0']    
         
         offset_lvl_Ti = -2.
@@ -305,29 +301,26 @@ class L_Grid(object):
         self.save_figure()
         self.show_figure()  
 
-#compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
-#                                show_pEW=True, show_fig=True, save_fig=False)
-
-compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='05bl',
+compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
                                 show_pEW=True, show_fig=True, save_fig=False)
 
-'''
-Run and save all options
 
-compare_spectra_object = L_grid(line_mode='downbranch',left_panel='11fe',
+#Run and save all options
+'''
+compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='11fe',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='downbranch',left_panel='11fe',
+compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='11fe',
                                 show_pEW=True, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='downbranch',left_panel='05bl',
+compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='05bl',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='downbranch',left_panel='05bl',
+compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='05bl',
                                 show_pEW=True, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='macroatom',left_panel='11fe',
+compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='11fe',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='macroatom',left_panel='11fe',
+compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='11fe',
                                 show_pEW=True, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='macroatom',left_panel='05bl',
+compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='05bl',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_grid(line_mode='macroatom',left_panel='05bl',
+compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='05bl',
                                 show_pEW=True, show_fig=False, save_fig=True)
 '''

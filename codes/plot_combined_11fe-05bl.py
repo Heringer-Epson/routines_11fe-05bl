@@ -424,7 +424,10 @@ class Compare_Spectra(object):
         
     def save_figure(self, extension='pdf', dpi=360):
         if self.save_fig:
-            plt.savefig('./../OUTPUT_FILES/FIGURES/Fig_combined_11fe_05bl_transition_'+self.line_mode+'.'+extension, format=extension, dpi=dpi)
+            plt.savefig('./../OUTPUT_FILES/FIGURES/'
+                        + 'Fig_combined_11fe_05bl_transition_'
+                        + self.line_mode + '.' + extension, format=extension,
+                        dpi=dpi)
         
     def show_figure(self):
         if self.show_fig:
@@ -442,7 +445,7 @@ class Compare_Spectra(object):
         return None         
 
 
-compare_spectra_object = Compare_Spectra(line_mode='downbranch',
+compare_spectra_object = Compare_Spectra(line_mode='macroatom',
                                          show_fig=False, save_fig=True)
 
 
