@@ -200,7 +200,7 @@ class Feature_Parspace(Get_BSNIP):
         x_list_line, y_list_line, z_list_line = [], [], []
 
         for i, L in enumerate(self.L_array):
-            L_str = str(format(np.log10(L), '.2f')) + '.pkl'        
+            L_str = str(format(np.log10(L), '.3f')) + '.pkl'        
             with open(path_data_11fe + '/loglum-' + L_str, 'r') as inp:
                 pkl = cPickle.load(inp)
                                 
@@ -258,7 +258,7 @@ class Feature_Parspace(Get_BSNIP):
         y_list, y_unc_list, y_flag_list = [], [], []
 
         for i, L in enumerate(self.L_array):
-            L_str = str(format(np.log10(L), '.2f')) + '.pkl'        
+            L_str = str(format(np.log10(L), '.3f')) + '.pkl'        
             with open(path_data_05bl + '/loglum-' + L_str, 'r') as inp:
                 pkl = cPickle.load(inp)
                 
@@ -273,13 +273,14 @@ class Feature_Parspace(Get_BSNIP):
                                            
                 if filling == 'full': 
                     #Do not include objects where the features start to blend.
-                    if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
+                    #if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
+                    if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.21:
                         
                         x = float(pkl['pEW_f7'].tolist()[0])
                         y = float(pkl['pEW_f6'].tolist()[0])
                         x_err = float(pkl['pEW_unc_f7'].tolist()[0])
                         y_err = float(pkl['pEW_unc_f6'].tolist()[0])
-                        
+                                                
                         x_list.append(x)
                         y_list.append(y)
                         x_unc_list.append(1.2 * x_err)
@@ -289,7 +290,7 @@ class Feature_Parspace(Get_BSNIP):
                           x, y, xerr=x_err, yerr=y_err,
                           ls='-', marker='p', markersize=14.,
                           fillstyle=filling, capsize=0., color='g', zorder=4)
-                          
+
                 self.ax.plot(x_list, y_list, ls='-', color='g', marker='None',
                              zorder=3)                                 
 
@@ -418,7 +419,7 @@ class Feature_Parspace(Get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()              
 
-parspace_object = Feature_Parspace(line_mode='macroatom', show_fig=True,
+parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=True,
                                    save_fig=True)
 
 

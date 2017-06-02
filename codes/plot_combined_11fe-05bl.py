@@ -109,17 +109,17 @@ class Compare_Spectra(object):
         #t_exp = 12.1 - standard
         aux_list = [path_obs_11fe + '2011_09_03.pkl',
                     path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '9.36_time_explosion-12.1.pkl',                                                            
+                      + '9.362_time_explosion-12.1.pkl',                                                            
                     path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '9.06_time_explosion-12.1.pkl',                                                            
+                      + '9.061_time_explosion-12.1.pkl',                                                            
                     path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '8.89_time_explosion-12.1.pkl',                                                            
+                      + '8.880_time_explosion-12.1.pkl',                                                            
                     path_obs_05bl + '2005_04_17.pkl',
                     path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '8.76_time_explosion-12.1.pkl',                                                            
+                      + '8.760_time_explosion-12.1.pkl',                                                            
                     path_obs_05bl + '2005_04_17.pkl',
                     path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '8.63_time_explosion-12.0.pkl',
+                      + '8.617_time_explosion-12.0.pkl',
                     path_obs_05bl + '2005_04_17.pkl']                    
         
         for pkl_path in aux_list:
@@ -129,17 +129,17 @@ class Compare_Spectra(object):
         #t_exp = 19.1 - standard.
         aux_list = [path_obs_11fe + '2011_09_10.pkl',
                     path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.54_time_explosion-19.1.pkl',                                                            
+                      + '9.544_time_explosion-19.1.pkl',                                                            
                     path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.24_time_explosion-19.1.pkl',                                                            
+                      + '9.243_time_explosion-19.1.pkl',                                                            
                     path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.06_time_explosion-19.1.pkl',                                                            
+                      + '9.063_time_explosion-19.1.pkl',                                                            
                     path_obs_05bl + '2005_04_26.pkl',
                     path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '8.94_time_explosion-19.1.pkl',                                                            
+                      + '8.942_time_explosion-19.1.pkl',                                                            
                     path_obs_05bl + '2005_04_26.pkl',
-                    path_syn_05bl + 'velocity_start-6600_loglum-'
-                      + '8.89_time_explosion-21.8.pkl',
+                    path_syn_05bl + 'velocity_start-6800_loglum-'
+                      + '8.861_time_explosion-21.8.pkl',
                     path_obs_05bl + '2005_04_26.pkl']        
                 
         for pkl_path in aux_list:
@@ -149,17 +149,17 @@ class Compare_Spectra(object):
         #t_exp = 28.3 - standard.  
         aux_list = [path_obs_11fe + '2011_09_19.pkl',
                     path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '9.36_time_explosion-28.3.pkl',                                                            
+                      + '9.362_time_explosion-28.3.pkl',                                                            
                     path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '9.06_time_explosion-28.3.pkl',                                                            
+                      + '9.061_time_explosion-28.3.pkl',                                                            
                     path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '8.89_time_explosion-28.3.pkl',                                                            
+                      + '8.880_time_explosion-28.3.pkl',                                                            
                     path_obs_05bl + '2005_05_04.pkl',
                     path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '8.76_time_explosion-28.3.pkl',                                                            
+                      + '8.760_time_explosion-28.3.pkl',                                                            
                     path_obs_05bl + '2005_05_04.pkl',
-                    path_syn_05bl + 'velocity_start-3300_loglum-'
-                      + '8.59_time_explosion-29.9.pkl',
+                    path_syn_05bl + 'velocity_start-3350_loglum-'
+                      + '8.594_time_explosion-29.9.pkl',
                     path_obs_05bl + '2005_05_04.pkl']        
                 
         for pkl_path in aux_list:
@@ -170,20 +170,20 @@ class Compare_Spectra(object):
         05bl -> 11fe spectra
         '''
 
-        #t_exp = 11
+        #t_exp = 12
         aux_list = [path_obs_11fe + '2011_09_03.pkl',
                     path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '9.36_time_explosion-12.1.pkl',          
+                      + '9.362_time_explosion-12.1.pkl',          
                     path_obs_11fe + '2011_09_03.pkl',                                                                                                                                            
                     path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '9.23_time_explosion-12.0.pkl',
+                      + '9.219_time_explosion-12.0.pkl',
                     path_obs_11fe + '2011_09_03.pkl',                                                                                                                                           
                     path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '9.10_time_explosion-12.0.pkl',      
+                      + '9.094_time_explosion-12.0.pkl',    
                     path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '8.93_time_explosion-12.0.pkl',      
+                      + '8.918_time_explosion-12.0.pkl',    
                     path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '8.63_time_explosion-12.0.pkl',          
+                      + '8.617_time_explosion-12.0.pkl',         
                     path_obs_05bl + '2005_04_17.pkl']        
                 
         for pkl_path in aux_list:
@@ -193,17 +193,17 @@ class Compare_Spectra(object):
         #t_exp = 21.8
         aux_list = [path_obs_11fe + '2011_09_10.pkl',
                     path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.54_time_explosion-19.1.pkl',          
+                      + '9.544_time_explosion-19.1.pkl',          
                     path_obs_11fe + '2011_09_10.pkl',                                                                                                                                            
-                    path_syn_05bl + 'velocity_start-6600_loglum-'
-                      + '9.48_time_explosion-21.8.pkl',
+                    path_syn_05bl + 'velocity_start-6800_loglum-'
+                      + '9.463_time_explosion-21.8.pkl',
                     path_obs_11fe + '2011_09_10.pkl',                                                                                                                                           
-                    path_syn_05bl + 'velocity_start-6600_loglum-'
-                      + '9.37_time_explosion-21.8.pkl',      
-                    path_syn_05bl + 'velocity_start-6600_loglum-'
-                      + '9.19_time_explosion-21.8.pkl',      
-                    path_syn_05bl + 'velocity_start-6600_loglum-'
-                      + '8.89_time_explosion-21.8.pkl',          
+                    path_syn_05bl + 'velocity_start-6800_loglum-'
+                      + '9.338_time_explosion-21.8.pkl',
+                    path_syn_05bl + 'velocity_start-6800_loglum-'
+                      + '9.162_time_explosion-21.8.pkl',     
+                    path_syn_05bl + 'velocity_start-6800_loglum-'
+                      + '8.861_time_explosion-21.8.pkl',         
                     path_obs_05bl + '2005_04_26.pkl']        
                 
         for pkl_path in aux_list:
@@ -213,17 +213,17 @@ class Compare_Spectra(object):
         #t_exp = 28.3 - standard.
         aux_list = [path_obs_11fe + '2011_09_19.pkl',
                     path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '9.36_time_explosion-28.3.pkl',          
+                      + '9.362_time_explosion-28.3.pkl',          
                     path_obs_11fe + '2011_09_19.pkl',                                                                                                                                            
-                    path_syn_05bl + 'velocity_start-3300_loglum-'
-                      + '9.20_time_explosion-29.9.pkl',
+                    path_syn_05bl + 'velocity_start-3350_loglum-'
+                      + '9.196_time_explosion-29.9.pkl',
                     path_obs_11fe + '2011_09_19.pkl',                                                                                                                                           
-                    path_syn_05bl + 'velocity_start-3300_loglum-'
-                      + '9.01_time_explosion-29.9.pkl',      
-                    path_syn_05bl + 'velocity_start-3300_loglum-'
-                      + '8.90_time_explosion-29.9.pkl',      
-                    path_syn_05bl + 'velocity_start-3300_loglum-'
-                      + '8.59_time_explosion-29.9.pkl',          
+                    path_syn_05bl + 'velocity_start-3350_loglum-'
+                      + '9.071_time_explosion-29.9.pkl',  
+                    path_syn_05bl + 'velocity_start-3350_loglum-'
+                      + '8.895_time_explosion-29.9.pkl',     
+                    path_syn_05bl + 'velocity_start-3350_loglum-'
+                      + '8.594_time_explosion-29.9.pkl',         
                     path_obs_05bl + '2005_05_04.pkl']        
                 
         for pkl_path in aux_list:
@@ -421,6 +421,13 @@ class Compare_Spectra(object):
         self.ax2.plot([np.nan], [np.nan], color='r', linewidth=lw, label='SN 2005bl')
         self.ax2.plot([np.nan], [np.nan], color='g', linewidth=lw, label='SN 2005bl $-$ synthetic') 
         self.ax2.legend(frameon=False, fontsize=20., numpoints=1, ncol=2,  columnspacing=3.0, labelspacing=0.05, loc=1)         
+
+    def print_velocity(self):
+        print '05bl +4.8 days velocity from observation: ', self.left_mid[8]['velocity_f7']
+        print '11fe +0.1 days velocity from observation: ', self.left_mid[0]['velocity_f7']
+        print '11fe +0.1 days velocity from default model: ', self.left_mid[1]['velocity_f7']
+        print '11fe +0.1 days velocity from cooler model: ', self.left_mid[5]['velocity_f7']
+        
         
     def save_figure(self, extension='pdf', dpi=360):
         if self.save_fig:
@@ -440,12 +447,13 @@ class Compare_Spectra(object):
         self.plotting_11fe_to_05bl()
         self.plotting_05bl_to_11fe()
         self.add_legend()
+        self.print_velocity()
         self.save_figure()
         self.show_figure()  
         return None         
 
 
-compare_spectra_object = Compare_Spectra(line_mode='macroatom',
+compare_spectra_object = Compare_Spectra(line_mode='downbranch',
                                          show_fig=False, save_fig=True)
 
 

@@ -116,7 +116,7 @@ class L_Grid(object):
                      + self.line_mode)
         
         for L in self.L_array:
-            L_str = str(format(np.log10(L), '.2f')) + '.pkl'        
+            L_str = str(format(np.log10(L), '.3f')) + '.pkl'        
             with open(path_data + '/loglum-' + L_str, 'r') as inp:
                 self.list_pkl.append(cPickle.load(inp))
 
@@ -282,7 +282,7 @@ class L_Grid(object):
         if self.save_fig:
             if self.show_pEW:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
-                            + self.line_mode + '_L_and_Ti_grid_pEW.'
+                            + self.line_mode + '_L_and_Ti_grid_pEW2.'
                             + extension)
             else:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
@@ -302,7 +302,7 @@ class L_Grid(object):
         self.show_figure()  
 
 compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
-                                show_pEW=True, show_fig=True, save_fig=False)
+                                show_pEW=False, show_fig=True, save_fig=True)
 
 
 #Run and save all options
