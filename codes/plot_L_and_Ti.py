@@ -123,18 +123,18 @@ class L_Grid(object):
         """Load pkl files for the titanium grid."""
         #path_data = (path_tardis_output + '11fe_Ti_' + self.line_mode)
         #Ti plot not yet run with macroatom.
-        path_data = (path_tardis_output + '11fe_Ti_downbranch') 
+        path_data = (path_tardis_output + '11fe_Ti_' + self.line_mode) 
         
         list_X_Ti = ['2000', '1000', '500', '200',
                      '100', '050', '020', '010', '005', '000']
                 
         for X_Ti in list_X_Ti:
            
-            filepath = path_data + '_' + X_Ti + '/loglum-9.54.pkl'
+            filepath = path_data + '_' + X_Ti + '/loglum-9.544.pkl'
             with open(filepath, 'r') as inp:
                 self.list_pkl_bright.append(cPickle.load(inp))            
 
-            filepath = path_data + '_' + X_Ti + '/loglum-8.94.pkl'
+            filepath = path_data + '_' + X_Ti + '/loglum-8.942.pkl'
             with open(filepath, 'r') as inp:
                 self.list_pkl_faint.append(cPickle.load(inp))            
     
@@ -272,8 +272,10 @@ class L_Grid(object):
 
             T_faint.append(pkl['t_inner'][0])
 
-        print ('\n\nTypical temperature difference for Ti models at high and '
-               + 'low brightnesses: ', np.mean(np.asarray(
+        print ('\n\n\nMean Temperature for brigther and fainter models:',
+               np.mean(T_bright), np.mean(T_faint))
+        print ('\n\n\nTypical temperature difference for Ti models at high and'
+               + ' low brightnesses: ', np.mean(np.asarray(
                [T1-T2 for (T1,T2) in zip(T_bright,T_faint)])))
             
     def save_figure(self, extension='pdf', dpi=360):
@@ -282,7 +284,7 @@ class L_Grid(object):
         if self.save_fig:
             if self.show_pEW:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
-                            + self.line_mode + '_L_and_Ti_grid_pEW2.'
+                            + self.line_mode + '_L_and_Ti_grid_pEW.'
                             + extension)
             else:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
@@ -301,12 +303,12 @@ class L_Grid(object):
         self.save_figure()
         self.show_figure()  
 
-compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
-                                show_pEW=False, show_fig=True, save_fig=True)
+#compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
+#                                show_pEW=True, show_fig=True, save_fig=False)
 
 
 #Run and save all options
-'''
+
 compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='11fe',
                                 show_pEW=False, show_fig=False, save_fig=True)
 compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='11fe',
@@ -323,4 +325,4 @@ compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='05bl',
                                 show_pEW=False, show_fig=False, save_fig=True)
 compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='05bl',
                                 show_pEW=True, show_fig=False, save_fig=True)
-'''
+

@@ -34,7 +34,7 @@ def flag2filling(flag_list):
     
 class get_BSNIP(object):
     def __init__(self):
-        with open('./../OUTPUT_FILES/BSNIP_small.pkl', 'r') as inp:
+        with open('./../OUTPUT_FILES/BSNIP.pkl', 'r') as inp:
             self.df_BSNIP = cPickle.load(inp)
                     
 class Compare_Feature(get_BSNIP):
@@ -218,10 +218,10 @@ class Compare_Feature(get_BSNIP):
         self.show_figure()
         
 Compare_Feature(feature='pEW', key='7', feature_range=[0., 200.],
-                show_fig=True, save_fig=False) 
+                show_fig=True, save_fig=True) 
 
-#Compare_Feature(feature='pEW', key='6', feature_range=[0., 70.],
-#                show_fig=True, save_fig=False)                                      
+Compare_Feature(feature='pEW', key='6', feature_range=[0., 70.],
+                show_fig=True, save_fig=True)                                      
 
 #Compare_Feature(feature='depth', key='7', feature_range=[0., 1.],
 #                show_fig=True, save_fig=False) 

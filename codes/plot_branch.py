@@ -419,7 +419,8 @@ class Feature_Parspace(Get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()              
 
-parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=True,
+parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=False,
                                    save_fig=True)
-
+parspace_object = Feature_Parspace(line_mode='macroatom', show_fig=False,
+                                   save_fig=True)
 

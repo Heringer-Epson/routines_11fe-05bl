@@ -69,24 +69,24 @@ class Macroatom_Comparison(object):
         
         with open(
           path_data + '11fe_standard_downbranch/velocity_start-10700_loglum-'
-          + '9.36_time_explosion-12.1.pkl', 'r') as inp:
+          + '9.362_time_explosion-12.1.pkl', 'r') as inp:
             self.pkl_11fe_downbranch = cPickle.load(inp)        
         
         with open(
           path_data + '11fe_standard_macroatom/velocity_start-10700_loglum-'
-          + '9.36_time_explosion-12.1.pkl', 'r') as inp:
+          + '9.362_time_explosion-12.1.pkl', 'r') as inp:
             self.pkl_11fe_macroatom = cPickle.load(inp)
 
         """05bl"""  
 
         with open(
           path_data + '05bl_standard_downbranch/velocity_start-8100_loglum-'
-          + '8.63_time_explosion-12.0.pkl', 'r') as inp:
+          + '8.617_time_explosion-12.0.pkl', 'r') as inp:
             self.pkl_05bl_downbranch = cPickle.load(inp)
         
         with open(
           path_data + '05bl_standard_macroatom/velocity_start-8100_loglum-'
-          + '8.63_time_explosion-12.0.pkl', 'r') as inp:
+          + '8.617_time_explosion-12.0.pkl', 'r') as inp:
             self.pkl_05bl_macroatom = cPickle.load(inp)
         
         """Observational"""

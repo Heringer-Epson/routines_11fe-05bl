@@ -39,9 +39,9 @@ class Plot_Ti(object):
         
         self.file_dens_11fe = ('density_11fe_Lgrid_downbranch_es-1.0_ms-1.0'
                                + '_19.1_day.dat')
-        self.file_dens_05bl = 'density_05bl_es-0.7_ms-1.0_29.9_day.dat'
-
         self.file_abun_11fe = 'abundance_11fe_Lgrid_downbranch_19.1_day.dat'
+        
+        self.file_dens_05bl = 'density_05bl_es-0.7_ms-1.0_29.9_day.dat'
         self.file_abun_05bl = 'abundance_05bl_29.9_day.dat'
         
         
@@ -134,7 +134,7 @@ class Plot_Ti(object):
             for i, (v_i, v_o, density) in enumerate(zip(
               self.vel_11fe, self.vel_11fe[1:], self.dens_11fe)):                
                            
-                if v_i > v_start and v_o <= self.vstop_11fe:
+                if v_i >= v_start and v_o <= self.vstop_11fe:
                     mass_above_photosphere += ((4. / 3.) * np.pi
                     * self.abun_11fe[i] * density * 100.**3.
                     * ((v_o * 1.e5)**3. - (v_i * 1.e5)**3.))
@@ -155,7 +155,7 @@ class Plot_Ti(object):
             for i, (v_i, v_o, density) in enumerate(zip(
               self.vel_05bl, self.vel_05bl[1:], self.dens_05bl)):                
                            
-                if v_i > v_start and v_o <= self.vstop_05bl:
+                if v_i >= v_start and v_o <= self.vstop_05bl:
                     mass_above_photosphere += ((4. / 3.) * np.pi
                     * self.abun_05bl[i] * density * (time * 24. * 3600.)**3.
                     * ((v_o * 1.e5)**3. - (v_i * 1.e5)**3.))
@@ -178,6 +178,9 @@ class Plot_Ti(object):
         self.ax.legend(frameon=False, fontsize=20., numpoints=1,
                        labelspacing=0.05, loc=1)          
         
+        print ('11fe model has ' + str(format(self.m_11fe[5], '.5f')) + ' Msun '
+          + 'above the photosphere at maximum (v=' + str(self.v_11fe[5]) + 'km/s)')
+    
     def save_figure(self, extension='pdf', dpi=360):
         if self.save_fig:
             plt.savefig('./../OUTPUT_FILES/FIGURES/Fig_Ti_mass_fraction.'

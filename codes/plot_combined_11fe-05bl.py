@@ -17,6 +17,7 @@ from matplotlib.ticker import MultipleLocator
 from matplotlib import cm
 from matplotlib import colors
 from itertools import cycle
+from astropy import units as u
 
 import colormaps as cmaps
                                                 
@@ -239,22 +240,30 @@ class Compare_Spectra(object):
         text_lum_wavelength = 8600.
         text_set_wavelength = 2000.
         
-        text_date_up = [
-          r'$t_{\mathrm{11fe}}=\mathrm{12.1 \ d,} \ '
-          + 'L_{\mathrm{11fe}}=\mathrm{2.3 \ 10^9 L_{\odot}}$',
-          r'$t_{\mathrm{11fe}}=\mathrm{19.1 \ d,} \ '
-          + 'L_{\mathrm{11fe}}=\mathrm{3.5 \ 10^9 L_{\odot}}$',
-          r'$t_{\mathrm{11fe}}=\mathrm{28.3 \ d,} \ '
-          + 'L_{\mathrm{11fe}}=\mathrm{2.3 \ 10^9 L_{\odot}}$']
+        #pkl = self.left_top[1]
+        #print str(format(self.left_top[1]['time_explosion'][0].to(u.day), '.1f'))
+        #print str(format(self.left_top[1]['luminosity_requested'][0].to(u.solLum).value / 1.e9, '.1f'))
+        
+        text_date_up, text_date_down = [], []
+        for (pkl_11fe, pkl_05bl) in [(self.left_top[1], self.left_top[7]),
+                                     (self.left_mid[1], self.left_mid[7]),
+                                     (self.left_bot[1], self.left_bot[7])]:
           
-        text_date_down = [
-          r'$t_{\mathrm{05bl}}=\mathrm{12 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{0.18} L_{\mathrm{11fe}}$',
-          r'$t_{\mathrm{05bl}}=\mathrm{21.8 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{0.22} L_{\mathrm{11fe}}$',
-          r'$t_{\mathrm{05bl}}=\mathrm{29.9 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{0.17} L_{\mathrm{11fe}}$']
-          
+            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day), '.1f'))
+            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day), '.1f'))
+            Lum_11fe = str(format(pkl_11fe['luminosity_requested'][0]
+              .to(u.solLum).value / 1.e9, '.1f'))
+            Lum_ratio = str(format((pkl_05bl['luminosity_requested'][0]
+                         / pkl_11fe['luminosity_requested'][0]), '.2f'))
+            
+            text_date_up.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_11fe
+              + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_11fe
+              + ' \ 10^9 L_{\odot}}$')
+              
+            text_date_down.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_05bl
+              + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_ratio
+              + ' \ 10^9 L_{\odot}}$') 
+
         text_lum = cycle([
           r'$L=L_{\mathrm{11fe}}$',
           r'$L=\mathrm{0.5} L_{\mathrm{11fe}}$',
@@ -328,21 +337,25 @@ class Compare_Spectra(object):
         text_lum_wavelength = 8600.
         text_set_wavelength = 2000.
 
-        text_date_up = [
-          r'$t_{\mathrm{11fe}}=\mathrm{12.1 \ d,} \ '
-          + 'L_{\mathrm{11fe}}=\mathrm{5.4} L_{\mathrm{05bl}}$',
-          r'$t_{\mathrm{11fe}}=\mathrm{19.1 \ d,} \ '
-          + 'L_{\mathrm{11fe}}=\mathrm{4.5} L_{\mathrm{05bl}}$',
-          r'$t_{\mathrm{11fe}}=\mathrm{28.3 \ d,} \ '
-          + 'L_{\mathrm{11fe}}=\mathrm{5.9} L_{\mathrm{05bl}}$']
+        text_date_up, text_date_down = [], []
+        for (pkl_11fe, pkl_05bl) in [(self.right_top[1], self.right_top[7]),
+                                     (self.right_mid[1], self.right_mid[7]),
+                                     (self.right_bot[1], self.right_bot[7])]:
           
-        text_date_down = [
-          r'$t_{\mathrm{05bl}}=\mathrm{12 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{3.39 \ 10^8 L_{\odot}}$',
-          r'$t_{\mathrm{05bl}}=\mathrm{21.8 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{7.76 \ 10^8 L_{\odot}}$',
-          r'$t_{\mathrm{05bl}}=\mathrm{29.9 \ d,} \ '
-          + 'L_{\mathrm{05bl}}=\mathrm{3.89 \ 10^8 L_{\odot}}$']
+            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day), '.1f'))
+            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day), '.1f'))
+            Lum_05bl = str(format(pkl_05bl['luminosity_requested'][0]
+              .to(u.solLum).value / 1.e8, '.2f'))
+            Lum_ratio = str(format((pkl_11fe['luminosity_requested'][0]
+                         / pkl_05bl['luminosity_requested'][0]), '.1f'))
+            
+            text_date_up.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_11fe
+              + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_ratio
+              + '} L_{\mathrm{05bl}}$')
+              
+            text_date_down.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_05bl
+              + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_05bl
+              + ' \ 10^8 L_{\odot}}$') 
 
         text_lum = cycle([
           r'$L=\mathrm{4} L_{\mathrm{05bl}}$',
@@ -455,5 +468,6 @@ class Compare_Spectra(object):
 
 compare_spectra_object = Compare_Spectra(line_mode='downbranch',
                                          show_fig=False, save_fig=True)
-
+compare_spectra_object = Compare_Spectra(line_mode='macroatom',
+                                         show_fig=False, save_fig=True)
 
