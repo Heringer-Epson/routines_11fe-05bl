@@ -228,6 +228,9 @@ class Feature_Parspace(Get_BSNIP):
                 if filling == 'full': 
                     #Do not include objects where the features start to blend.
                     if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
+                        
+                        #print '  yes', L/3.5e9
+                        
                         x_list_line.append(pkl['pEW_f7'].tolist())
                         y_list_line.append(pkl['pEW_f6'].tolist())
                         z_list_line.append(i)
@@ -271,10 +274,14 @@ class Feature_Parspace(Get_BSNIP):
                 filling = ('full' if (x_flag_list != 1. and y_flag_list != 1.)
                            else 'none')
                                            
+                
+                #print L / 10. ** 8.861
                 if filling == 'full': 
                     #Do not include objects where the features start to blend.
                     #if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
                     if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.21:
+                        
+                        print '  yes', L, L / 10. ** 8.861
                         
                         x = float(pkl['pEW_f7'].tolist()[0])
                         y = float(pkl['pEW_f6'].tolist()[0])
@@ -419,8 +426,8 @@ class Feature_Parspace(Get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()              
 
-parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=False,
-                                   save_fig=True)
-parspace_object = Feature_Parspace(line_mode='macroatom', show_fig=False,
-                                   save_fig=True)
+parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=True,
+                                   save_fig=False)
+#parspace_object = Feature_Parspace(line_mode='macroatom', show_fig=False,
+#                                   save_fig=False)
 

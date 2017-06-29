@@ -34,10 +34,11 @@ def normalize_spectrum(w, f):
 class Analyse_Vphoto(object):
     """TBW"""
     
-    def __init__(self, L_folder, show_fig=True, save_fig=False):
+    def __init__(self, mode, L_folder, show_fig=True, save_fig=False):
 
         self.show_fig = show_fig
         self.save_fig = save_fig
+        self.mode = mode
         self.L_folder = L_folder
         self.list_pkl = []
         self.pkl_05bl = None 
@@ -96,7 +97,9 @@ class Analyse_Vphoto(object):
         """Load data files."""
         
         #Sequence in vphoto.
-        path_data = path_tardis_output + '11fe_vphoto_' + self.L_folder + '/'
+        path_data = (path_tardis_output + '11fe_' + self.mode + '_'
+          + self.L_folder + '/')
+       
         for filename in os.listdir(path_data):
             if filename.split('.')[-1] == 'pkl':
                 with open(path_data + filename, 'r') as inp:
@@ -105,12 +108,12 @@ class Analyse_Vphoto(object):
         #05bl spectrum that is matched with the scaled temperature.
         path_data = path_tardis_output + '05bl_standard_downbranch/'
         L_suffix = self.L_folder.split('_')[0]
-        if L_suffix == 'premax':
-            filename = 'velocity_start-8100_loglum-8.63_time_explosion-12.0.pkl' 
+        if L_suffix == 'premax' or L_suffix == 'premaxII':
+            filename = 'velocity_start-8100_loglum-8.617_time_explosion-12.0.pkl' 
         elif L_suffix == 'max':
-            filename = 'velocity_start-6600_loglum-8.89_time_explosion-21.8.pkl'      
+            filename = 'velocity_start-6800_loglum-8.861_time_explosion-21.8.pkl'      
         elif L_suffix == 'postmax':
-            filename = 'velocity_start-3300_loglum-8.59_time_explosion-29.9.pkl'        
+            filename = 'velocity_start-3350_loglum-8.594_time_explosion-29.9.pkl'        
                 
         with open(path_data + filename, 'r') as inp: 
             self.pkl_05bl = cPickle.load(inp)                
@@ -149,6 +152,7 @@ class Analyse_Vphoto(object):
             self.ax2.plot(v_prof[0], T_inner, marker='*', markersize=14., color=c)
         
             #print 'v', v_prof[0], 'dilution factor', pkl['w'].tolist()[0][0]
+            print 'texp', pkl['time_explosion'][0].value / 3600 / 24, pkl['t_inner'][0]
         
         #Plot the 05bl spectrum whose scaled 11fe spectrum matches.
                 
@@ -180,7 +184,9 @@ class Analyse_Vphoto(object):
     def save_figure(self, ext='pdf', dpi=360):
         directory = './../OUTPUT_FILES/FIGURES/'
         if self.save_fig:
-            filename = directory + 'Fig_vphoto_' + self.L_folder + '.' + ext
+            filename = (directory + 'Fig_' + self.mode + '_' + self.L_folder
+              + '.' + ext)
+              
             plt.savefig(filename, format=ext, dpi=dpi)
         
     def show_figure(self):
@@ -194,7 +200,11 @@ class Analyse_Vphoto(object):
         self.save_figure()
         self.show_figure()  
 
-compare_spectra_object = Analyse_Vphoto(L_folder='postmax_1L', show_fig=True, 
-                                        save_fig=True)
-                                        
-                                        
+#compare_spectra_object = Analyse_Vphoto(mode='vphoto', L_folder='premax_L-05bl',
+#                                        show_fig=True, save_fig=False)
+
+#compare_spectra_object = Analyse_Vphoto(mode='texp', L_folder='premax_L-05bl',
+#                                        show_fig=True, save_fig=False)                                        
+
+compare_spectra_object = Analyse_Vphoto(mode='texp', L_folder='postmax_L-05bl',
+                                        show_fig=True, save_fig=False)                                            

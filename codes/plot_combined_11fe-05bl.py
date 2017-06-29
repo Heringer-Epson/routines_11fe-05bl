@@ -249,20 +249,22 @@ class Compare_Spectra(object):
                                      (self.left_mid[1], self.left_mid[7]),
                                      (self.left_bot[1], self.left_bot[7])]:
           
-            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day), '.1f'))
-            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day), '.1f'))
+            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day)
+              .value, '.1f'))
+            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day)
+              .value, '.1f'))
             Lum_11fe = str(format(pkl_11fe['luminosity_requested'][0]
               .to(u.solLum).value / 1.e9, '.1f'))
             Lum_ratio = str(format((pkl_05bl['luminosity_requested'][0]
-                         / pkl_11fe['luminosity_requested'][0]), '.2f'))
+              / pkl_11fe['luminosity_requested'][0]), '.2f'))
             
             text_date_up.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_11fe
               + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_11fe
               + ' \ 10^9 L_{\odot}}$')
               
-            text_date_down.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_05bl
-              + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_ratio
-              + ' \ 10^9 L_{\odot}}$') 
+            text_date_down.append(r'$t_{\mathrm{05bl}}=\mathrm{' + date_05bl
+              + ' \ d,} \ L_{\mathrm{05bl}}=\mathrm{' + Lum_ratio
+              + '} L_{\mathrm{11fe}}$') 
 
         text_lum = cycle([
           r'$L=L_{\mathrm{11fe}}$',
@@ -342,19 +344,21 @@ class Compare_Spectra(object):
                                      (self.right_mid[1], self.right_mid[7]),
                                      (self.right_bot[1], self.right_bot[7])]:
           
-            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day), '.1f'))
-            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day), '.1f'))
+            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day)
+              .value, '.1f'))
+            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day)
+              .value, '.1f'))
             Lum_05bl = str(format(pkl_05bl['luminosity_requested'][0]
               .to(u.solLum).value / 1.e8, '.2f'))
             Lum_ratio = str(format((pkl_11fe['luminosity_requested'][0]
-                         / pkl_05bl['luminosity_requested'][0]), '.1f'))
+              / pkl_05bl['luminosity_requested'][0]), '.1f'))
             
             text_date_up.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_11fe
               + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_ratio
               + '} L_{\mathrm{05bl}}$')
               
-            text_date_down.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_05bl
-              + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_05bl
+            text_date_down.append(r'$t_{\mathrm{05bl}}=\mathrm{' + date_05bl
+              + ' \ d,} \ L_{\mathrm{05bl}}=\mathrm{' + Lum_05bl
               + ' \ 10^8 L_{\odot}}$') 
 
         text_lum = cycle([
