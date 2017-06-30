@@ -22,6 +22,9 @@ mpl.rcParams['font.family'] = 'STIXGeneral'
 class Macroatom_Comparison(object):
     
     def __init__(self, show_fig=True, save_fig=False):
+        """Creates a figure where spectra computed using the 'downbranch' and
+        'macroatom' modes are compared for both 11fe and 05bl.
+        """
 
         self.show_fig = show_fig
         self.save_fig = save_fig 

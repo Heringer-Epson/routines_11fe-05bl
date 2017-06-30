@@ -30,6 +30,9 @@ def mean_flux(w, f, w_min, w_max):
     return np.mean(f[window_condition])
 
 class Compare_Spectra(object):
+    """Code to make a figure containg a comparison between scaled 11fe and 05bl
+    models with observations.
+    """
     
     def __init__(self, line_mode='downbranch', show_fig=True, save_fig=False):
         

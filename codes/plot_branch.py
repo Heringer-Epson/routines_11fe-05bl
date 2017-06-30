@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+""" Code to make a plot of the pEW of the strong silicon feature (f7) vs.
+the weak silicon feature (f6). This includes objects from the BSNIP sample
+and the simulation of 11fe and 05bl with scaled luminosity.
+"""
+
 import os                                                               
 import sys
 import time
