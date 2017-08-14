@@ -1,6 +1,7 @@
 #Ignore most of the folders - to remain empty in the repository.
 ./Notes
 ./codes/*.pyc
+./codes/*.lprof
 ./data/*
 ./INPUT_FILES/*
 ./OUTPUT_FILES/*

@@ -51,14 +51,7 @@ class BSNIP_Database(object):
         self.BSNIP_fp = './../data/BSNIP_I/'
         self.BSNIP_spectra_fp = self.BSNIP_fp + 'paper_I/Spectra_database/'      
         self.df = None
-
-        self.fs_label = 26
-        self.fs_ticks = 26
-        self.fs_legend = 20
-        self.fs_text = 22
-        self.fs_as = 24
-        self.fs_feature = 14
-    
+        
         self.run_BSNIP_database()
    
     def remove_duplicate_files(self):
@@ -69,21 +62,19 @@ class BSNIP_Database(object):
         ---
         I kept this function for documentation purposes.
         """     
-        print '  -RUNNING: Removing duplicate files...',        
         start_time = time.time()
         for file_spectra in os.listdir(self.BSNIP_spectra_fp):
             if file_spectra[-13:-4] == 'corrected':
                 os.remove(BSNIP_fp + file_spectra[0:-14] + file_spectra[-4::]) 
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
 
+    #@profile
     def initialize_dataframe_and_get_spectra(self):
         """Collects information such as the ID and date which are available
         as part of the BSNIP filenames and information available in the spectra
         files. Initialises a dictionary where the wavelength, flux, ID and
         date are stored.
         """
-        print '  -RUNNING: Retrieving spectra...',  
-        start_time = time.time()
+        print '  -RUNNING: Retrieving spectra...'  
         list_base, list_index = [], []                                                                
         for file_spectra in os.listdir(self.BSNIP_spectra_fp):
             file_name_parts = (file_spectra.rstrip('\n').replace('.flm', '')
@@ -101,15 +92,16 @@ class BSNIP_Database(object):
                 file_contend = csv.reader(f, delimiter=' ')
                 for row in file_contend:
                     row = filter(None, row)
-                    wavelength.append(row[0])
-                    flux.append(row[1]) 
-
+                    wavelength.append(float(row[0]))
+                    flux.append(float(row[1]))         
+            
             #Prep the data that will be stored in the dataframe. In particular,
             #the dataframe indexes will contain the SNID and data to uniquely
             #identify the entries.
             list_index.append(SNID + '|' + date)            
             list_base.append({'SNID': SNID, 'date': date,
-                             'wavelength_raw': wavelength, 'flux_raw': flux})  
+                             'wavelength_raw': np.asarray(wavelength),
+                             'flux_raw': np.asarray(flux)})  
 
         
         #Set the combination of SNID + date as the dataframe index.
@@ -124,15 +116,12 @@ class BSNIP_Database(object):
         #more controlled and ordenated fashion.
         self.df = self.df.reset_index(drop=True)
         
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
-
     def read_general_info(self):
         """Get data from table 1 of paper I.
         Includes: subtype, host morfology, host redshift and foreground
         extinction E(B-V). 
         """
-        print '  -RUNNING: Retrieving BSNIP spectral data...',      
-        start_time = time.time()
+        print '  -RUNNING: Retrieving BSNIP spectral data...'      
         list_base = []
         with open(self.BSNIP_fp + 'paper_I/table1.dat', 'r') as f:
             for row in f:
@@ -151,7 +140,7 @@ class BSNIP_Database(object):
                 if redshift == '':
                     redshift = np.nan                
                 else:
-                    redshift = str(float(redshift) / const.c.to('km/s').value)
+                    redshift = float(redshift) / const.c.to('km/s').value
                                     
                 extinction = row[63:69].replace(' ', '')
                 if extinction == '':
@@ -159,16 +148,14 @@ class BSNIP_Database(object):
 
                 list_base.append({
                   'SNID': SNID, 'subtype': subtype, 'host_morphology': morp,
-                  'host_redshift': redshift,
-                  'foreground_extinction': extinction})
+                  'host_redshift': float(redshift),
+                  'foreground_extinction': float(extinction)})
         
         df_add_table1 = pd.DataFrame(list_base)
         
         self.df = pd.merge(self.df, df_add_table1,
                            on='SNID', how='left').set_index(self.df.index)
-        
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
-
+                           
     def read_phase_info(self):
         """Get data from table 2 of paper I.
         Includes: phase, wavelength range, reliability of spectrophotometry
@@ -184,8 +171,7 @@ class BSNIP_Database(object):
         causing a mistach between the indexes here and on the table.
         But because our routines also sort the table using python, all is fine.
         """
-        print '  -RUNNING: Retrieving phases...',       
-        start_time = time.time()
+        print '  -RUNNING: Retrieving phases...'      
         list_base, list_index = [], []                                                                
         
         with open(self.BSNIP_fp + 'paper_I/table2.dat', 'r') as f:
@@ -222,14 +208,11 @@ class BSNIP_Database(object):
         df_add_table2 = df_add_table2.reset_index(drop=True)  
         self.df = self.df.join(df_add_table2)
       
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
-
     def read_types(self):
         """Get data from table 1 of paper II.
         Includes: Suptype according to Benetti, Branch and Wang schemes.
         """
-        print '  -RUNNING: Appending subtypes...',      
-        start_time = time.time()
+        print '  -RUNNING: Appending subtypes...'      
         list_base = []
         
         with open(self.BSNIP_fp + 'paper_II/tablea1.dat', 'r') as f:
@@ -264,14 +247,11 @@ class BSNIP_Database(object):
         self.df = pd.merge(self.df, df_add_tablea1,
                            on='SNID', how='left').set_index(self.df.index)         
        
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
-
     def read_features(self):
         """Get teh spectral features from table b1-9 of paper II.
         Includes: pEW, velocity, depth, etc...
         """        
-        print '  -RUNNING: Appending features...',      
-        start_time = time.time()
+        print '  -RUNNING: Appending features...'      
         phase_list = list(self.df['phase'].tolist())
         SNID_list = list(self.df['SNID'].tolist())
                 
@@ -336,15 +316,12 @@ class BSNIP_Database(object):
             self.df = pd.merge(self.df, df_add_tableb, on=['SNID','phase'],
                                how='left').set_index(self.df.index)    
         
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
-
     def trim_by_phase_and_indexes(self):
         """Remove the spectra whose epoch is nowhere near maximum (i.e. >20d).
         This ensures the files created is smaller and the computation of
         observables faster.
         """
-        print '  -REMOVING SPECTRA NOT NEAR MAXIMUM...',        
-        start_time = time.time()
+        print '  -REMOVING SPECTRA NOT NEAR MAXIMUM...'       
         if self.subset_objects_idx is not None: 
             self.df = self.df.loc[self.subset_objects_idx, :]       
         
@@ -354,28 +331,34 @@ class BSNIP_Database(object):
         self.df = self.df.dropna(subset=['phase'])
         self.df[['phase']] = self.df[['phase']].astype(str)
 
-        print 'DONE (' + str(format(time.time() - start_time, '.1f')) + 's)'
 
     def compute_observables(self):
         """Use the 'compute_features' routine in 'tardistools' to compute
         the pEW, velocity and depth of features in BSNIP.
         """
-        self.df = cp.Analyse_Spectra(self.df, smoothing_window=51,
-                                     verbose=True).run_analysis()        
+        
+        out_list_dicts, list_index = [], []
 
-        self.df = cp.Compute_Uncertainty(self.df, smoothing_window=51,
-                                         N_MC_runs=3000).run_uncertainties()     
- 
-        if self.make_figures:
-            directory = './../OUTPUT_FILES/' + self.filename + '_figs/'
-            if not os.path.exists(directory):
-                os.makedirs(directory)
-            cp.Plot_Spectra(self.df, out_dir=directory, show_fig=True,
-                            save_fig=False)
-   
+        for index, row in self.df.iterrows():
+                                                
+            out_row_dict = cp.Analyse_Spectra(
+              row['wavelength_raw'], row['flux_raw'], row['host_redshift'],
+              0., row.to_dict(), smoothing_window=51,
+              deredshift_and_normalize=True).run_analysis()
+
+            #out_row_dict = cp.Compute_Uncertainty(
+            #  D=out_row_dict, smoothing_window=51, N_MC_runs=100).run_uncertainties() 
+
+            out_list_dicts.append(out_row_dict)
+            list_index.append(index)
+
+        self.df = pd.DataFrame(out_list_dicts, index=list_index)
+        
+        
     def save_output(self):
         self.df.to_pickle('./../OUTPUT_FILES/' + self.filename + '.pkl')
         
+    #@profile
     def run_BSNIP_database(self):
         self.initialize_dataframe_and_get_spectra()
         self.read_general_info()
@@ -386,14 +369,14 @@ class BSNIP_Database(object):
         self.compute_observables()
         self.save_output()
 
-BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=False)
-#BSNIP_object = BSNIP_Database(filename='BSNIP_test', subset_objects_idx=[136], make_figures=True)
+#BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=False)
+BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=False)
+#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=[333], make_figures=False)
 
-#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,400,1), make_figures=True)
-#
+#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,380,1), make_figures=False)
 
-#BSNIP_object = BSNIP_Database(filename='BSNIP_test3', subset_objects_idx=[1151, 518],
-#                              make_figures=True)
+
+#BSNIP_object = BSNIP_Database(filename='BSNIP_test', subset_objects_idx=np.arange(136,141,1), make_figures=False)
 
 #BSNIP_object = BSNIP_Database(subset_objects_idx=np.arange(100,200,1),
 #                              make_figures=True)
