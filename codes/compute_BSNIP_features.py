@@ -336,24 +336,29 @@ class BSNIP_Database(object):
         """Use the 'compute_features' routine in 'tardistools' to compute
         the pEW, velocity and depth of features in BSNIP.
         """
+
+        print '  -COMPUTING FEATURES...'       
         
         out_list_dicts, list_index = [], []
 
         for index, row in self.df.iterrows():
                                                 
+            print '    -AT INDEX: ' + str(index)
+            
+            #Note that the passed extinction is zero. The pEW feature **is**
+            #to be computed without correcting for extinction.
             out_row_dict = cp.Analyse_Spectra(
-              row['wavelength_raw'], row['flux_raw'], row['host_redshift'],
-              0., row.to_dict(), smoothing_window=51,
-              deredshift_and_normalize=True).run_analysis()
+              wavelength=row['wavelength_raw'], flux=row['flux_raw'],
+              redshift=row['host_redshift'], extinction=0., D=row.to_dict(),
+              smoothing_window=51, deredshift_and_normalize=True).run_analysis()
 
-            #out_row_dict = cp.Compute_Uncertainty(
-            #  D=out_row_dict, smoothing_window=51, N_MC_runs=100).run_uncertainties() 
+            out_row_dict = cp.Compute_Uncertainty(
+              D=out_row_dict, smoothing_window=51, N_MC_runs=3000).run_uncertainties() 
 
             out_list_dicts.append(out_row_dict)
             list_index.append(index)
 
         self.df = pd.DataFrame(out_list_dicts, index=list_index)
-        
         
     def save_output(self):
         self.df.to_pickle('./../OUTPUT_FILES/' + self.filename + '.pkl')
@@ -369,8 +374,8 @@ class BSNIP_Database(object):
         self.compute_observables()
         self.save_output()
 
-#BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=False)
-BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=False)
+BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=False)
+#BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=False)
 #BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=[333], make_figures=False)
 
 #BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,380,1), make_figures=False)

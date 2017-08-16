@@ -18,8 +18,6 @@ from matplotlib import cm
 from matplotlib import colors
 from itertools import cycle
 from astropy import units as u
-
-import colormaps as cmaps
                                                 
 mpl.rcParams['mathtext.fontset'] = 'stix'
 mpl.rcParams['mathtext.fontset'] = 'stix'
@@ -101,139 +99,110 @@ class Compare_Spectra(object):
     def load_spectra(self):
 
         #Define path variables.
-        path_syn_11fe = (path_tardis_output + '11fe_standard_'
-                         + self.line_mode + '/')                        
-        path_syn_05bl = (path_tardis_output + '05bl_standard_'
-                         + self.line_mode + '/')                       
         path_obs_11fe = './../INPUT_FILES/observational_spectra/2011fe/'
         path_obs_05bl = './../INPUT_FILES/observational_spectra/2005bl/'
-                                                  
-        """11fe -> 05bl spectra"""
+
+        def get_path(event, v, L, line_mode, texp): 
+            case_folder = path_tardis_output + event + '_default_L-scaled/'
+            filename = ('velocity_start-' + v + '_loglum-' + L + '_line_'
+                    + 'interaction-' + line_mode + '_time_explosion-' + texp)
+            path_sufix = filename + '/' + filename + '.pkl'
+            return case_folder + path_sufix
+                                                          
+       #=-=-=-=-=-=-=-=-=-=-=-=- 11fe -> 05bl spectra -=-=-=-=-=-=-=-=-=-=-=-=
 
         #t_exp = 12.1 - standard
-        aux_list = [path_obs_11fe + '2011_09_03.pkl',
-                    path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '9.362_time_explosion-12.1.pkl',                                                            
-                    path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '9.061_time_explosion-12.1.pkl',                                                            
-                    path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '8.880_time_explosion-12.1.pkl',                                                            
-                    path_obs_05bl + '2005_04_17.pkl',
-                    path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '8.760_time_explosion-12.1.pkl',                                                            
-                    path_obs_05bl + '2005_04_17.pkl',
-                    path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '8.617_time_explosion-12.0.pkl',
-                    path_obs_05bl + '2005_04_17.pkl']                    
+        aux = [path_obs_11fe + '2011_09_03.pkl',
+               get_path('11fe', '10700', '9.362', self.line_mode, '12.1'),
+               get_path('11fe', '10700', '9.061', self.line_mode, '12.1'),     
+               get_path('11fe', '10700', '8.880', self.line_mode, '12.1'),     
+               path_obs_05bl + '2005_04_17.pkl',
+               get_path('11fe', '10700', '8.760', self.line_mode, '12.1'),     
+               path_obs_05bl + '2005_04_17.pkl',
+               get_path('05bl', '8100', '8.617', self.line_mode, '12.0'),     
+               path_obs_05bl + '2005_04_17.pkl']                    
         
-        for pkl_path in aux_list:
+        for pkl_path in aux:
             with open(pkl_path, 'r') as inp:
                 self.left_top.append(cPickle.load(inp))
 
         #t_exp = 19.1 - standard.
-        aux_list = [path_obs_11fe + '2011_09_10.pkl',
-                    path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.544_time_explosion-19.1.pkl',                                                            
-                    path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.243_time_explosion-19.1.pkl',                                                            
-                    path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.063_time_explosion-19.1.pkl',                                                            
-                    path_obs_05bl + '2005_04_26.pkl',
-                    path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '8.942_time_explosion-19.1.pkl',                                                            
-                    path_obs_05bl + '2005_04_26.pkl',
-                    path_syn_05bl + 'velocity_start-6800_loglum-'
-                      + '8.861_time_explosion-21.8.pkl',
-                    path_obs_05bl + '2005_04_26.pkl']        
+        aux = [path_obs_11fe + '2011_09_10.pkl',
+               get_path('11fe', '7850', '9.544', self.line_mode, '19.1'),
+               get_path('11fe', '7850', '9.243', self.line_mode, '19.1'),
+               get_path('11fe', '7850', '9.063', self.line_mode, '19.1'),
+               path_obs_05bl + '2005_04_26.pkl',
+               get_path('11fe', '7850', '8.942', self.line_mode, '19.1'),
+               path_obs_05bl + '2005_04_26.pkl',
+               get_path('05bl', '6800', '8.861', self.line_mode, '21.8'),
+               path_obs_05bl + '2005_04_26.pkl']        
                 
-        for pkl_path in aux_list:
+        for pkl_path in aux:
             with open(pkl_path, 'r') as inp:
                 self.left_mid.append(cPickle.load(inp))
 
         #t_exp = 28.3 - standard.  
-        aux_list = [path_obs_11fe + '2011_09_19.pkl',
-                    path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '9.362_time_explosion-28.3.pkl',                                                            
-                    path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '9.061_time_explosion-28.3.pkl',                                                            
-                    path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '8.880_time_explosion-28.3.pkl',                                                            
-                    path_obs_05bl + '2005_05_04.pkl',
-                    path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '8.760_time_explosion-28.3.pkl',                                                            
-                    path_obs_05bl + '2005_05_04.pkl',
-                    path_syn_05bl + 'velocity_start-3350_loglum-'
-                      + '8.594_time_explosion-29.9.pkl',
-                    path_obs_05bl + '2005_05_04.pkl']        
+        aux = [path_obs_11fe + '2011_09_19.pkl',
+               get_path('11fe', '4550', '9.362', self.line_mode, '28.3'),
+               get_path('11fe', '4550', '9.061', self.line_mode, '28.3'),
+               get_path('11fe', '4550', '8.880', self.line_mode, '28.3'),
+               path_obs_05bl + '2005_05_04.pkl',
+               get_path('11fe', '4550', '8.760', self.line_mode, '28.3'),
+               path_obs_05bl + '2005_05_04.pkl',
+               get_path('05bl', '3350', '8.594', self.line_mode, '29.9'),
+               path_obs_05bl + '2005_05_04.pkl']        
                 
-        for pkl_path in aux_list:
+        for pkl_path in aux:
             with open(pkl_path, 'r') as inp:
                 self.left_bot.append(cPickle.load(inp))    
 
-        '''
-        05bl -> 11fe spectra
-        '''
+       #=-=-=-=-=-=-=-=-=-=-=-=- 05bl -> 11fe spectra -=-=-=-=-=-=-=-=-=-=-=-=
 
         #t_exp = 12
-        aux_list = [path_obs_11fe + '2011_09_03.pkl',
-                    path_syn_11fe + 'velocity_start-10700_loglum-'
-                      + '9.362_time_explosion-12.1.pkl',          
-                    path_obs_11fe + '2011_09_03.pkl',                                                                                                                                            
-                    path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '9.219_time_explosion-12.0.pkl',
-                    path_obs_11fe + '2011_09_03.pkl',                                                                                                                                           
-                    path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '9.094_time_explosion-12.0.pkl',    
-                    path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '8.918_time_explosion-12.0.pkl',    
-                    path_syn_05bl + 'velocity_start-8100_loglum-'
-                      + '8.617_time_explosion-12.0.pkl',         
-                    path_obs_05bl + '2005_04_17.pkl']        
+        aux = [path_obs_11fe + '2011_09_03.pkl',
+               get_path('11fe', '10700', '9.362', self.line_mode, '12.1'),
+               path_obs_11fe + '2011_09_03.pkl',                                                                                                                                            
+               get_path('05bl', '8100', '9.219', self.line_mode, '12.0'),
+               path_obs_11fe + '2011_09_03.pkl',                                                                                                                                           
+               get_path('05bl', '8100', '9.094', self.line_mode, '12.0'),
+               get_path('05bl', '8100', '8.918', self.line_mode, '12.0'),
+               get_path('05bl', '8100', '8.617', self.line_mode, '12.0'),
+               path_obs_05bl + '2005_04_17.pkl']        
                 
-        for pkl_path in aux_list:
+        for pkl_path in aux:
             with open(pkl_path, 'r') as inp:
                 self.right_top.append(cPickle.load(inp)) 
 
         #t_exp = 21.8
-        aux_list = [path_obs_11fe + '2011_09_10.pkl',
-                    path_syn_11fe + 'velocity_start-7850_loglum-'
-                      + '9.544_time_explosion-19.1.pkl',          
-                    path_obs_11fe + '2011_09_10.pkl',                                                                                                                                            
-                    path_syn_05bl + 'velocity_start-6800_loglum-'
-                      + '9.463_time_explosion-21.8.pkl',
-                    path_obs_11fe + '2011_09_10.pkl',                                                                                                                                           
-                    path_syn_05bl + 'velocity_start-6800_loglum-'
-                      + '9.338_time_explosion-21.8.pkl',
-                    path_syn_05bl + 'velocity_start-6800_loglum-'
-                      + '9.162_time_explosion-21.8.pkl',     
-                    path_syn_05bl + 'velocity_start-6800_loglum-'
-                      + '8.861_time_explosion-21.8.pkl',         
-                    path_obs_05bl + '2005_04_26.pkl']        
+        aux = [path_obs_11fe + '2011_09_10.pkl',
+               get_path('11fe', '7850', '9.544', self.line_mode, '19.1'),
+               path_obs_11fe + '2011_09_10.pkl',                                                                                                                                            
+               get_path('05bl', '6800', '9.463', self.line_mode, '21.8'),
+               path_obs_11fe + '2011_09_10.pkl',                                                                                                                                           
+               get_path('05bl', '6800', '9.338', self.line_mode, '21.8'),
+               get_path('05bl', '6800', '9.162', self.line_mode, '21.8'),
+               get_path('05bl', '6800', '8.861', self.line_mode, '21.8'),
+               path_obs_05bl + '2005_04_26.pkl']        
                 
-        for pkl_path in aux_list:
+        for pkl_path in aux:
             with open(pkl_path, 'r') as inp:
                 self.right_mid.append(cPickle.load(inp)) 
 
         #t_exp = 28.3 - standard.
-        aux_list = [path_obs_11fe + '2011_09_19.pkl',
-                    path_syn_11fe + 'velocity_start-4550_loglum-'
-                      + '9.362_time_explosion-28.3.pkl',          
-                    path_obs_11fe + '2011_09_19.pkl',                                                                                                                                            
-                    path_syn_05bl + 'velocity_start-3350_loglum-'
-                      + '9.196_time_explosion-29.9.pkl',
-                    path_obs_11fe + '2011_09_19.pkl',                                                                                                                                           
-                    path_syn_05bl + 'velocity_start-3350_loglum-'
-                      + '9.071_time_explosion-29.9.pkl',  
-                    path_syn_05bl + 'velocity_start-3350_loglum-'
-                      + '8.895_time_explosion-29.9.pkl',     
-                    path_syn_05bl + 'velocity_start-3350_loglum-'
-                      + '8.594_time_explosion-29.9.pkl',         
-                    path_obs_05bl + '2005_05_04.pkl']        
+        aux = [path_obs_11fe + '2011_09_19.pkl',
+               get_path('11fe', '4550', '9.362', self.line_mode, '28.3'),
+               path_obs_11fe + '2011_09_19.pkl',                                                                                                                                            
+               get_path('05bl', '3350', '9.196', self.line_mode, '29.9'),
+               path_obs_11fe + '2011_09_19.pkl',                                                                                                                                           
+               get_path('05bl', '3350', '9.071', self.line_mode, '29.9'),
+               get_path('05bl', '3350', '8.895', self.line_mode, '29.9'),
+               get_path('05bl', '3350', '8.594', self.line_mode, '29.9'),
+               path_obs_05bl + '2005_05_04.pkl']        
                 
-        for pkl_path in aux_list:
+        for pkl_path in aux:
             with open(pkl_path, 'r') as inp:
                 self.right_bot.append(cPickle.load(inp)) 
-   
+
     def plotting_11fe_to_05bl(self):
         """Plot the left panel"""
        
@@ -243,23 +212,19 @@ class Compare_Spectra(object):
         text_lum_wavelength = 8600.
         text_set_wavelength = 2000.
         
-        #pkl = self.left_top[1]
-        #print str(format(self.left_top[1]['time_explosion'][0].to(u.day), '.1f'))
-        #print str(format(self.left_top[1]['luminosity_requested'][0].to(u.solLum).value / 1.e9, '.1f'))
-        
         text_date_up, text_date_down = [], []
         for (pkl_11fe, pkl_05bl) in [(self.left_top[1], self.left_top[7]),
                                      (self.left_mid[1], self.left_mid[7]),
                                      (self.left_bot[1], self.left_bot[7])]:
           
-            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day)
+            date_11fe = str(format(pkl_11fe['time_explosion'].to(u.day)
               .value, '.1f'))
-            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day)
+            date_05bl = str(format(pkl_05bl['time_explosion'].to(u.day)
               .value, '.1f'))
-            Lum_11fe = str(format(pkl_11fe['luminosity_requested'][0]
+            Lum_11fe = str(format(pkl_11fe['luminosity_requested']
               .to(u.solLum).value / 1.e9, '.1f'))
-            Lum_ratio = str(format((pkl_05bl['luminosity_requested'][0]
-              / pkl_11fe['luminosity_requested'][0]), '.2f'))
+            Lum_ratio = str(format((pkl_05bl['luminosity_requested']
+              / pkl_11fe['luminosity_requested']), '.2f'))
             
             text_date_up.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_11fe
               + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_11fe
@@ -290,15 +255,18 @@ class Compare_Spectra(object):
             for i, pkl in enumerate(pkl_set):  
 
                 #Plot spectrum
-                wavelength = np.asarray(
-                  pkl['wavelength_raw'].tolist()[0]).astype(np.float)
-                flux_normalized = (np.asarray(
-                  pkl['flux_normalized'].tolist()[0]).astype(np.float)
-                  + offset[i] + pkl_offset_scaling[l] * offset_lvl)         
+                wavelength = pkl['wavelength_corr']
+                flux_normalized = (pkl['flux_normalized']
+                  + offset[i] + pkl_offset_scaling[l] * offset_lvl)                     
+                
+                #wavelength = np.asarray(pkl['wavelength_raw'].tolist()[0])
+                #flux_normalized = (np.asarray(
+                #  pkl['flux_normalized'].tolist()[0]).astype(np.float)
+                #  + offset[i] + pkl_offset_scaling[l] * offset_lvl)         
                 self.ax1.plot(wavelength, flux_normalized, color=color[i],
                               linewidth=2., alpha=alpha[i])
 
-                #Plot photosphere temperature text
+                #Plot T-inner text. Try-case excludes the observational .pkl's.
                 try:
                     text_lvl = mean_flux(wavelength, flux_normalized, 1500., 2500.)
                     self.ax1.text(
@@ -332,7 +300,7 @@ class Compare_Spectra(object):
                     text_lvl = mean_flux(wavelength, flux_normalized, 1800., 2200.)
                     self.ax1.text(text_set_wavelength, text_lvl - 4. * offset_text,
                     next(text_set), fontsize=20., horizontalalignment='left', color='k')  
-                                                 
+                         
     def plotting_05bl_to_11fe(self):
         """Plot the right panel"""
         
@@ -347,14 +315,14 @@ class Compare_Spectra(object):
                                      (self.right_mid[1], self.right_mid[7]),
                                      (self.right_bot[1], self.right_bot[7])]:
           
-            date_11fe = str(format(pkl_11fe['time_explosion'][0].to(u.day)
+            date_11fe = str(format(pkl_11fe['time_explosion'].to(u.day)
               .value, '.1f'))
-            date_05bl = str(format(pkl_05bl['time_explosion'][0].to(u.day)
+            date_05bl = str(format(pkl_05bl['time_explosion'].to(u.day)
               .value, '.1f'))
-            Lum_05bl = str(format(pkl_05bl['luminosity_requested'][0]
+            Lum_05bl = str(format(pkl_05bl['luminosity_requested']
               .to(u.solLum).value / 1.e8, '.2f'))
-            Lum_ratio = str(format((pkl_11fe['luminosity_requested'][0]
-              / pkl_05bl['luminosity_requested'][0]), '.1f'))
+            Lum_ratio = str(format((pkl_11fe['luminosity_requested']
+              / pkl_05bl['luminosity_requested']), '.1f'))
             
             text_date_up.append(r'$t_{\mathrm{11fe}}=\mathrm{' + date_11fe
               + ' \ d,} \ L_{\mathrm{11fe}}=\mathrm{' + Lum_ratio
@@ -385,11 +353,9 @@ class Compare_Spectra(object):
             for i, pkl in enumerate(pkl_set): 
                  
                 #Plot spectrum
-                wavelength = np.asarray(
-                  pkl['wavelength_raw'].tolist()[0]).astype(np.float)
-                flux_normalized = (np.asarray(
-                  pkl['flux_normalized'].tolist()[0]).astype(np.float)
-                  + offset[i] + pkl_offset_scaling[l] * offset_lvl)   
+                wavelength = pkl['wavelength_raw']
+                flux_normalized = (pkl['flux_normalized'] + offset[i]
+                                   + pkl_offset_scaling[l] * offset_lvl)   
                 self.ax2.plot(wavelength, flux_normalized, color=color[i],
                               linewidth=2., alpha=alpha[i])
 
@@ -426,8 +392,8 @@ class Compare_Spectra(object):
                 if i == 1:
                     text_lvl = mean_flux(wavelength, flux_normalized, 1800., 2200.)
                     self.ax2.text(text_set_wavelength, text_lvl - 4. * offset_text,
-                    next(text_set), fontsize=20., horizontalalignment='left', color='k')                    
-                       
+                    next(text_set), fontsize=20., horizontalalignment='left', color='k')                  
+                               
     def add_legend(self):
         lw = 2.
         self.ax1.plot([np.nan], [np.nan], color='k', linewidth=lw, label='SN 2011fe')
@@ -467,14 +433,13 @@ class Compare_Spectra(object):
         self.plotting_11fe_to_05bl()
         self.plotting_05bl_to_11fe()
         self.add_legend()
-        self.print_velocity()
+        #self.print_velocity()
         self.save_figure()
         self.show_figure()  
-        return None         
 
 
 compare_spectra_object = Compare_Spectra(line_mode='downbranch',
-                                         show_fig=False, save_fig=True)
-compare_spectra_object = Compare_Spectra(line_mode='macroatom',
-                                         show_fig=False, save_fig=True)
+                                         show_fig=True, save_fig=False)
+#compare_spectra_object = Compare_Spectra(line_mode='macroatom',
+#                                         show_fig=False, save_fig=True)
 
