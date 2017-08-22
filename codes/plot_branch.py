@@ -94,11 +94,11 @@ class Get_BSNIP(object):
                    
 class Feature_Parspace(Get_BSNIP):
 
-    def __init__(self, line_mode='downbranch', show_fig=True, save_fig=False):
+    def __init__(self, lm='downbranch', show_fig=True, save_fig=False):
                         
         Get_BSNIP.__init__(self)
         
-        self.line_mode = line_mode
+        self.lm = lm
         self.show_fig = show_fig
         self.save_fig = save_fig
                 
@@ -196,7 +196,7 @@ class Feature_Parspace(Get_BSNIP):
 
     def add_11fe_synthetic_spectra(self):
 
-        path_data_11fe = (path_tardis_output + '11fe_Lgrid_' + self.line_mode)        
+        case_folder = path_tardis_output + '11fe_L-grid/'        
         
         cmap_L = cmaps.viridis
         Norm_L = colors.Normalize(vmin=0., vmax=len(self.L_array) + 11.)                 
@@ -205,40 +205,34 @@ class Feature_Parspace(Get_BSNIP):
         x_list_line, y_list_line, z_list_line = [], [], []
 
         for i, L in enumerate(self.L_array):
-            L_str = str(format(np.log10(L), '.3f')) + '.pkl'        
-            with open(path_data_11fe + '/loglum-' + L_str, 'r') as inp:
+            L_str = str(format(np.log10(L), '.3f'))       
+            fname = ('loglum-' + L_str +  '_line_interaction-' + self.lm) 
+            with open(case_folder + fname + '/' + fname + '.pkl', 'r') as inp:
+                
                 pkl = cPickle.load(inp)
                                 
-                list_x = np.asarray(pkl['pEW_f7'].tolist()).astype(np.float)
-                
-                list_x_unc = 1.2 * np.asarray(
-                  pkl['pEW_unc_f7'].tolist()).astype(np.float)
-                
-                list_x_flag = np.asarray(
-                  pkl['pEW_flag_f7'].tolist()).astype(np.float)
+                list_x = pkl['pEW_f7']
+                list_x_unc = 1.2 * pkl['pEW_unc_f7']
+                list_x_flag = pkl['pEW_flag_f7']
                         
-                list_y = np.asarray(pkl['pEW_f6'].tolist()).astype(np.float)
-                
-                list_y_unc = 1.2 * np.asarray(
-                  pkl['pEW_unc_f6'].tolist()).astype(np.float)
-                
-                list_y_flag = np.asarray(
-                  pkl['pEW_flag_f6'].tolist()).astype(np.float)
+                list_y = pkl['pEW_f6']
+                list_y_unc = 1.2 * pkl['pEW_unc_f6']
+                list_y_flag = pkl['pEW_flag_f6']
                     
                 filling = ('full' if (list_x_flag != 1. and list_y_flag != 1.)
                            else 'none')
                            
                 color = cmap_L(Norm_L(i))
                 
-                if filling == 'full': 
+                #if filling == 'full': 
+                if 2. > 1.: 
                     #Do not include objects where the features start to blend.
-                    if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
+                    if  L / 3.5e9 <= 1.5 and L / 3.5e9 > 0.28:
                         
+                        #print '  yes 11fe', L / 3.5e9
                         
-                        print '  yes 11fe', L/3.5e9
-                        
-                        x_list_line.append(pkl['pEW_f7'].tolist())
-                        y_list_line.append(pkl['pEW_f6'].tolist())
+                        x_list_line.append(pkl['pEW_f7'])
+                        y_list_line.append(pkl['pEW_f6'])
                         z_list_line.append(i)
                                         
                         self.ax.errorbar(
@@ -260,39 +254,38 @@ class Feature_Parspace(Get_BSNIP):
         self.ax.add_collection(lc)
 
     def add_05bl_synthetic_spectra(self):           
-        path_data_05bl = (path_tardis_output + '05bl_Lgrid_' + self.line_mode)        
+
+        case_folder = path_tardis_output + '05bl_L-grid/'        
         
         list_pkl_05bl = []
         x_list, x_unc_list, x_flag_list = [], [], []
         y_list, y_unc_list, y_flag_list = [], [], []
 
         for i, L in enumerate(self.L_array):
-            L_str = str(format(np.log10(L), '.3f')) + '.pkl'        
-            with open(path_data_05bl + '/loglum-' + L_str, 'r') as inp:
+            L_str = str(format(np.log10(L), '.3f'))       
+            fname = ('loglum-' + L_str +  '_line_interaction-' + self.lm) 
+            with open(case_folder + fname + '/' + fname + '.pkl', 'r') as inp:
+                
                 pkl = cPickle.load(inp)
                 
-                x_flag_list = np.asarray(
-                  pkl['pEW_flag_f7'].tolist()).astype(np.float)
-                
-                y_flag_list = np.asarray(
-                  pkl['pEW_flag_f6'].tolist()).astype(np.float)
-                    
+                x_flag_list = pkl['pEW_flag_f7']
+                y_flag_list = pkl['pEW_flag_f6']
                 filling = ('full' if (x_flag_list != 1. and y_flag_list != 1.)
                            else 'none')
-                                           
                 
                 #print L / 10. ** 8.861
-                if filling == 'full': 
+                #if filling == 'full': 
+                if 2. > 1.: 
                     #Do not include objects where the features start to blend.
                     #if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.28:
                     if  L/3.5e9 <= 1.5 and L/3.5e9 > 0.21:
                         
-                        print '  yes 05bl', L, L / 10. ** 8.861
+                        #print '  yes 05bl', L, L / 10. ** 8.861
                         
-                        x = float(pkl['pEW_f7'].tolist()[0])
-                        y = float(pkl['pEW_f6'].tolist()[0])
-                        x_err = float(pkl['pEW_unc_f7'].tolist()[0])
-                        y_err = float(pkl['pEW_unc_f6'].tolist()[0])
+                        x = pkl['pEW_f7']
+                        y = pkl['pEW_f6']
+                        x_err = pkl['pEW_unc_f7']
+                        y_err = pkl['pEW_unc_f6']
                                                 
                         x_list.append(x)
                         y_list.append(y)
@@ -316,22 +309,14 @@ class Feature_Parspace(Get_BSNIP):
         pkl_11fe_file = open(path_data + '2011fe/2011_09_10.pkl', 'r')
         pkl_11fe = cPickle.load(pkl_11fe_file)
 
-        list_x_11fe = np.asarray(pkl_11fe['pEW_f7'].tolist()).astype(np.float)
-               
-        list_x_unc_11fe = 1.2 * np.asarray(
-          pkl_11fe['pEW_unc_f7'].tolist()).astype(np.float)
-          
-        list_x_flag_11fe = np.asarray(
-          pkl_11fe['pEW_flag_f7'].tolist()).astype(np.float)
+        list_x_11fe = pkl_11fe['pEW_f7']
+        list_x_unc_11fe = 1.2 * pkl_11fe['pEW_unc_f7']
+        list_x_flag_11fe = pkl_11fe['pEW_flag_f7']
                  
-        list_y_11fe = np.asarray(pkl_11fe['pEW_f6'].tolist()).astype(np.float)
+        list_y_11fe = pkl_11fe['pEW_f6']
+        list_y_unc_11fe = 1.2 * pkl_11fe['pEW_unc_f6']
+        list_y_flag_11fe = pkl_11fe['pEW_flag_f6']
         
-        list_y_unc_11fe = 1.2 * np.asarray(
-          pkl_11fe['pEW_unc_f6'].tolist()).astype(np.float)
-        
-        list_y_flag_11fe = np.asarray(
-          pkl_11fe['pEW_flag_f6'].tolist()).astype(np.float)
-       
         filling_11fe = ('full' if (list_x_flag_11fe != 1.
                         and list_y_flag_11fe != 1.) else 'none')
 
@@ -345,21 +330,13 @@ class Feature_Parspace(Get_BSNIP):
         pkl_05bl_file = open(path_data + '2005bl/2005_04_26.pkl', 'r')
         pkl_05bl = cPickle.load(pkl_05bl_file)
      
-        list_x_05bl = np.asarray(pkl_05bl['pEW_f7'].tolist()).astype(np.float)
-               
-        list_x_unc_05bl = 1.2 * np.asarray(
-          pkl_05bl['pEW_unc_f7'].tolist()).astype(np.float)
-          
-        list_x_flag_05bl = np.asarray(
-          pkl_05bl['pEW_flag_f7'].tolist()).astype(np.float)
+        list_x_05bl = pkl_05bl['pEW_f7']
+        list_x_unc_05bl = 1.2 * pkl_05bl['pEW_unc_f7']
+        list_x_flag_05bl = pkl_05bl['pEW_flag_f7']
                  
-        list_y_05bl = np.asarray(pkl_05bl['pEW_f6'].tolist()).astype(np.float)
-        
-        list_y_unc_05bl = 1.2 * np.asarray(
-          pkl_05bl['pEW_unc_f6'].tolist()).astype(np.float)
-        
-        list_y_flag_05bl = np.asarray(
-          pkl_05bl['pEW_flag_f6'].tolist()).astype(np.float)
+        list_y_05bl = pkl_05bl['pEW_f6']
+        list_y_unc_05bl = 1.2 * pkl_05bl['pEW_unc_f6']
+        list_y_flag_05bl = pkl_05bl['pEW_flag_f6']
        
         filling_05bl = ('full' if (list_x_flag_05bl != 1.
                         and list_y_flag_05bl != 1.) else 'none')
@@ -414,7 +391,7 @@ class Feature_Parspace(Get_BSNIP):
     def save_figure(self, extension='pdf', dpi=360):        
         directory = './../OUTPUT_FILES/FIGURES/'
         if self.save_fig:
-            plt.savefig(directory + 'Fig_parspace_' + self.line_mode + '.'
+            plt.savefig(directory + 'Fig_parspace_' + self.lm + '.'
                         + extension, format=extension, dpi=dpi)
         
     def show_figure(self):
@@ -432,8 +409,8 @@ class Feature_Parspace(Get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()              
 
-parspace_object = Feature_Parspace(line_mode='downbranch', show_fig=True,
-                                   save_fig=False)
-parspace_object = Feature_Parspace(line_mode='macroatom', show_fig=False,
-                                   save_fig=False)
+parspace_object = Feature_Parspace(lm='downbranch', show_fig=False,
+                                   save_fig=True)
+parspace_object = Feature_Parspace(lm='macroatom', show_fig=False,
+                                   save_fig=True)
 

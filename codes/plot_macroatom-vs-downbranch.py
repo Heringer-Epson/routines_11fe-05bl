@@ -62,40 +62,39 @@ class Macroatom_Comparison(object):
         self.ax.yaxis.set_minor_locator(MultipleLocator(0.5))
         self.ax.yaxis.set_major_locator(MultipleLocator(2.))        
         self.ax.tick_params(labelleft='off')                
-        return None
     
     def load_spectra(self):
 
+        def get_path(event, v, L, lm, texp): 
+            case_folder = path_tardis_output + event + '_default_L-scaled/'
+            filename = ('velocity_start-' + v + '_loglum-' + L + '_line_'
+                    + 'interaction-' + lm + '_time_explosion-' + texp)
+            path_sufix = filename + '/' + filename + '.pkl'
+            return case_folder + path_sufix
+            
         """11fe"""
-        
-        path_data = path_tardis_output 
-        
-        with open(
-          path_data + '11fe_standard_downbranch/velocity_start-10700_loglum-'
-          + '9.362_time_explosion-12.1.pkl', 'r') as inp:
+
+        fname = get_path('11fe', '10700', '9.362', 'downbranch', '12.1')
+        with open(fname, 'r') as inp:
             self.pkl_11fe_downbranch = cPickle.load(inp)        
         
-        with open(
-          path_data + '11fe_standard_macroatom/velocity_start-10700_loglum-'
-          + '9.362_time_explosion-12.1.pkl', 'r') as inp:
+        fname = get_path('11fe', '10700', '9.362', 'macroatom', '12.1')
+        with open(fname, 'r') as inp:
             self.pkl_11fe_macroatom = cPickle.load(inp)
 
         """05bl"""  
 
-        with open(
-          path_data + '05bl_standard_downbranch/velocity_start-8100_loglum-'
-          + '8.617_time_explosion-12.0.pkl', 'r') as inp:
+        fname = get_path('05bl', '8100', '8.617', 'downbranch', '12.0')
+        with open(fname, 'r') as inp:
             self.pkl_05bl_downbranch = cPickle.load(inp)
         
-        with open(
-          path_data + '05bl_standard_macroatom/velocity_start-8100_loglum-'
-          + '8.617_time_explosion-12.0.pkl', 'r') as inp:
+        fname = get_path('05bl', '8100', '8.617', 'macroatom', '12.0')
+        with open(fname, 'r') as inp:
             self.pkl_05bl_macroatom = cPickle.load(inp)
         
         """Observational"""
 
         path_data = './../INPUT_FILES/observational_spectra/'
-
         with open(path_data + '2011fe/2011_09_03.pkl', 'r') as inp:
             self.pkl_11fe_obs = cPickle.load(inp)                       
 
@@ -108,36 +107,23 @@ class Macroatom_Comparison(object):
 
         """11fe"""
         #Observational
-        wavelength_obs = np.asarray(
-          self.pkl_11fe_obs['wavelength_raw'].tolist()[0]).astype(np.float)
-        
-        flux_obs = np.asarray(
-          self.pkl_11fe_obs['flux_normalized'].tolist()[0]).astype(np.float)
+        wavelength_obs = self.pkl_11fe_obs['wavelength_corr']
+        flux_obs = self.pkl_11fe_obs['flux_normalized']
         
         self.ax.plot(
           wavelength_obs, flux_obs, color='k', linewidth=1., label='SN 2011fe')
 
         #Downbranch
-        wavelength_11fe_downbranch = (np.asarray(
-          self.pkl_11fe_downbranch['wavelength_raw'].tolist()[0])
-          .astype(np.float))
-       
-        flux_11fe_downbranch = (np.asarray(
-          self.pkl_11fe_downbranch['flux_normalized'].tolist()[0])
-          .astype(np.float))
+        wavelength_11fe_downbranch = self.pkl_11fe_downbranch['wavelength_corr']
+        flux_11fe_downbranch = self.pkl_11fe_downbranch['flux_normalized']
           
         self.ax.plot(wavelength_11fe_downbranch, flux_11fe_downbranch,
           color='b', linewidth=1., label=r'${\rm 2011fe} \, - \, '
           + r'{\tt Downbranch}$')         
 
         #Macroatom
-        wavelength_11fe_macroatom = (np.asarray(
-          self.pkl_11fe_macroatom['wavelength_raw'].tolist()[0])
-          .astype(np.float))
-     
-        flux_11fe_macroatom = (np.asarray(
-          self.pkl_11fe_macroatom['flux_normalized'].tolist()[0])
-          .astype(np.float))
+        wavelength_11fe_macroatom = self.pkl_11fe_macroatom['wavelength_corr']
+        flux_11fe_macroatom = self.pkl_11fe_macroatom['flux_normalized']
        
         self.ax.plot(wavelength_11fe_macroatom, flux_11fe_macroatom,
           color='b', ls=':', linewidth=1., label=r'${\rm 2011fe} \, - \, '
@@ -145,37 +131,24 @@ class Macroatom_Comparison(object):
 
         """05bl"""
         #Observational
-        wavelength_obs = np.asarray(
-          self.pkl_05bl_obs['wavelength_raw'].tolist()[0]).astype(np.float)
-        
-        flux_obs = np.asarray(
-          self.pkl_05bl_obs['flux_normalized'].tolist()[0]).astype(np.float)
+        wavelength_obs = self.pkl_05bl_obs['wavelength_corr']
+        flux_obs = self.pkl_05bl_obs['flux_normalized']
         
         self.ax.plot(
           wavelength_obs, flux_obs + offset, color='r', linewidth=1.,
           label='SN 2005bl')
 
         #Downbranch
-        wavelength_05bl_downbranch = (np.asarray(
-          self.pkl_05bl_downbranch['wavelength_raw'].tolist()[0])
-          .astype(np.float))
-       
-        flux_05bl_downbranch = (np.asarray(
-          self.pkl_05bl_downbranch['flux_normalized'].tolist()[0])
-          .astype(np.float))
+        wavelength_05bl_downbranch = self.pkl_05bl_downbranch['wavelength_corr']
+        flux_05bl_downbranch = self.pkl_05bl_downbranch['flux_normalized']
           
         self.ax.plot(wavelength_05bl_downbranch, flux_05bl_downbranch + offset,
           color='g', linewidth=1., label=r'${\rm 2005bl} \, - \, '
           + r'{\tt Downbranch}$')         
 
         #Macroatom
-        wavelength_05bl_macroatom = (np.asarray(
-          self.pkl_05bl_macroatom['wavelength_raw'].tolist()[0])
-          .astype(np.float))
-     
-        flux_05bl_macroatom = (np.asarray(
-          self.pkl_05bl_macroatom['flux_normalized'].tolist()[0])
-          .astype(np.float))
+        wavelength_05bl_macroatom = self.pkl_05bl_macroatom['wavelength_corr']
+        flux_05bl_macroatom = self.pkl_05bl_macroatom['flux_normalized']
        
         self.ax.plot(wavelength_05bl_macroatom, flux_05bl_macroatom + offset,
           color='g', ls=':', linewidth=1., label=r'${\rm 2005bl} \, - \, '

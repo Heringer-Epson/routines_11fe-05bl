@@ -338,7 +338,13 @@ class BSNIP_Database(object):
         """
 
         print '  -COMPUTING FEATURES...'       
-        
+
+        #Make directory to store the spectra figures if it does not exist yet.
+        if self.make_figures:
+            top_dir = './../OUTPUT_FILES/' + self.filename + '_FIGURES/'
+            if not os.path.exists(top_dir):
+                os.makedirs(top_dir)
+                
         out_list_dicts, list_index = [], []
 
         for index, row in self.df.iterrows():
@@ -352,9 +358,16 @@ class BSNIP_Database(object):
               redshift=row['host_redshift'], extinction=0., D=row.to_dict(),
               smoothing_window=51, deredshift_and_normalize=True).run_analysis()
 
-            out_row_dict = cp.Compute_Uncertainty(
-              D=out_row_dict, smoothing_window=51, N_MC_runs=3000).run_uncertainties() 
+            #Compute uncertainties.
+            #out_row_dict = cp.Compute_Uncertainty(
+            #  D=out_row_dict, smoothing_window=51, N_MC_runs=3000).run_uncertainties() 
 
+            #Make figures.
+            if self.make_figures:
+                fname = top_dir + str(index) + '.png'
+                cp.Plot_Spectra(D=out_row_dict, outfile=fname,
+                                show_fig=False, save_fig=True)
+                    
             out_list_dicts.append(out_row_dict)
             list_index.append(index)
 
@@ -374,11 +387,11 @@ class BSNIP_Database(object):
         self.compute_observables()
         self.save_output()
 
-BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=False)
+BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=True)
 #BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=False)
 #BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=[333], make_figures=False)
 
-#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,380,1), make_figures=False)
+#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,380,1), make_figures=True)
 
 
 #BSNIP_object = BSNIP_Database(filename='BSNIP_test', subset_objects_idx=np.arange(136,141,1), make_figures=False)

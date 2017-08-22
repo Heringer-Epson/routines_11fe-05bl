@@ -50,18 +50,21 @@ class Analyse_Observational(object):
           wavelength=np.asarray(wavelength),
           flux=np.asarray(flux),
           redshift=self.redshift, extinction=0.,
-          smoothing_window=51, deredshift_and_normalize=True).run_analysis()            
+          smoothing_window=21, deredshift_and_normalize=True).run_analysis()            
 
         D = cp.Compute_Uncertainty(
-          D=D, smoothing_window=51, N_MC_runs=3000).run_uncertainties() 
+          D=D, smoothing_window=21, N_MC_runs=3000).run_uncertainties() 
 
-        #cp.Plot_Spectra(D, show_fig=False, save_fig=False)                                
+        outfile = path_data + self.filename.split('.')[0] + '.png'
+        cp.Plot_Spectra(D, outfile=outfile, show_fig=False, save_fig=True)                                
 
+        print D['pEW_f6']
+    
         #Create .pkl containg the spectrum and derived qquantities.
         outfile = path_data + self.filename.split('.dat')[0] + '.pkl'
         with open(outfile, 'w') as out_pkl:
             pickle.dump(D, out_pkl, protocol=pickle.HIGHEST_PROTOCOL)
-                   
+     
 files_11fe = ['2011fe/2011_08_25.dat', '2011fe/2011_08_28.dat',
               '2011fe/2011_08_31.dat', '2011fe/2011_09_03.dat',
               '2011fe/2011_09_07.dat', '2011fe/2011_09_10.dat',

@@ -34,7 +34,7 @@ class L_Grid(object):
     
     Parameters
     ----------
-    line_mode : ~str
+    lm : ~str
         Options are 'downbranch' or 'macroatom'.
         Used to determine the directory where the data will be collected.
         
@@ -46,14 +46,14 @@ class L_Grid(object):
     Notes
     -----
     *One needs to make sure that the directories where the spectra are available
-    do correspond to the SN requested (11fe/05bl) and the correct line_mode.
+    do correspond to the SN requested (11fe/05bl) and the correct lm.
     *Requires 'path_tardis_output' to be defined in the bash file.
     """
     
-    def __init__(self, line_mode='downbranch', left_panel='11fe',
+    def __init__(self, lm='downbranch', left_panel='11fe',
                  show_pEW=False, show_fig=True, save_fig=False):
 
-        self.line_mode = line_mode
+        self.lm = lm
         self.left_panel = left_panel
         self.show_pEW = show_pEW
         self.show_fig = show_fig
@@ -112,30 +112,32 @@ class L_Grid(object):
     def load_spectra(self):
         
         """Get the pkl files for the luminosity grid."""
-        path_data = (path_tardis_output + self.left_panel + '_Lgrid_'
-                     + self.line_mode)
+        case_folder = path_tardis_output + self.left_panel + '_L-grid/'
         
         for L in self.L_array:
-            L_str = str(format(np.log10(L), '.3f')) + '.pkl'        
-            with open(path_data + '/loglum-' + L_str, 'r') as inp:
+            L_str = str(format(np.log10(L), '.3f'))       
+            fname = ('loglum-' + L_str +  '_line_interaction-' + self.lm) 
+            with open(case_folder + fname + '/' + fname + '.pkl', 'r') as inp:
                 self.list_pkl.append(cPickle.load(inp))
 
         """Load pkl files for the titanium grid."""
-        #path_data = (path_tardis_output + '11fe_Ti_' + self.line_mode)
+        #path_data = (path_tardis_output + '11fe_Ti_' + self.lm)
         #Ti plot not yet run with macroatom.
-        path_data = (path_tardis_output + '11fe_Ti_' + self.line_mode) 
+        case_folder = path_tardis_output + '11fe_Ti-grid/'
         
-        list_X_Ti = ['2000', '1000', '500', '200',
-                     '100', '050', '020', '010', '005', '000']
+        list_X_Ti = ['20.00', '10.00', '5.00', '2.00',
+                     '1.00', '0.5', '0.2', '0.1', '0.05', '0.00']
                 
         for X_Ti in list_X_Ti:
            
-            filepath = path_data + '_' + X_Ti + '/loglum-9.544.pkl'
-            with open(filepath, 'r') as inp:
+            #L1 and L2 refers to L_11fe and L_11fe/4, respectively.
+            f_L1 = 'TiCrs-' + X_Ti + '_loglum-9.544_line_interaction-' + self.lm
+            f_L2 = 'TiCrs-' + X_Ti + '_loglum-8.942_line_interaction-' + self.lm
+            
+            with open(case_folder + f_L1 + '/' + f_L1 + '.pkl', 'r') as inp:
                 self.list_pkl_bright.append(cPickle.load(inp))            
 
-            filepath = path_data + '_' + X_Ti + '/loglum-8.942.pkl'
-            with open(filepath, 'r') as inp:
+            with open(case_folder + f_L2 + '/' + f_L2 + '.pkl', 'r') as inp:
                 self.list_pkl_faint.append(cPickle.load(inp))            
     
     def plotting(self):
@@ -143,16 +145,13 @@ class L_Grid(object):
         """Plot the left panel: Spectra assorted in a luminosity grid."""     
         cmap_L = cmaps.viridis
         Norm_L = colors.Normalize(vmin=0., vmax=len(self.list_pkl) + 11.)
-        offset_lvl_L = -2.
+        offset_L = -2.
         offset_global = 1.
        
         for i, (pkl,L) in enumerate(zip(self.list_pkl,self.L_array)):                           
            
-            wavelength = (np.asarray(pkl['wavelength_raw'].tolist()[0])
-                          .astype(np.float))
-           
-            flux_norm = (np.asarray(pkl['flux_normalized'].tolist()[0])
-                         .astype(np.float) + offset_global + offset_lvl_L * i)
+            wavelength = pkl['wavelength_corr']
+            flux_norm = pkl['flux_normalized'] + offset_global + offset_L * i
            
             #Restrict the plotted wavelength range so that there is room
             #for the luminosity text.
@@ -164,6 +163,7 @@ class L_Grid(object):
             self.ax1.plot(w, f, color=cmap_L(Norm_L(i)))            
                  
             #Add luminosity text to plotted spectra.
+
             text_lvl = mean_flux(w, f, 8850., 8980.) - 0.15
             
             L_text = (r'$\mathrm{' + str(format(self.L_array[i] / (3.5e9), '.2f'))
@@ -172,22 +172,18 @@ class L_Grid(object):
             self.ax1.text(
               8980, text_lvl, L_text, fontsize=20., horizontalalignment='left',
               color=cmap_L(Norm_L(i)))
-            
+
             #Draw pEW region, if requested.
             if self.show_pEW:
                 for key,color in zip(['6', '7'],['b','r']):
                     try:
-                        wavelength_region = (np.asarray(
-                          pkl['wavelength_region_f' + key].tolist()[0])
-                          .astype(np.float))
+                        wavelength_region = pkl['wavelength_region_f' + key]
                         
-                        flux_region = (np.asarray(
-                          pkl['flux_normalized_region_f' + key].tolist()[0])
-                          .astype(np.float) + offset_global + offset_lvl_L * i)
+                        flux_region = (pkl['flux_normalized_region_f' + key]
+                                       + offset_global + offset_L * i)
                         
-                        pseudo_flux = (np.asarray(
-                          pkl['pseudo_cont_flux_f' + key].tolist()[0])
-                          .astype(np.float) + offset_global + offset_lvl_L * i)
+                        pseudo_flux = (pkl['pseudo_cont_flux_f' + key]
+                                       + offset_global + offset_L * i)
                         
                         self.ax1.plot(wavelength_region, pseudo_flux, ls='--',
                                       color=color, marker='None')
@@ -198,27 +194,25 @@ class L_Grid(object):
                     except:
                         pass                
                     
-
         """ Plot the right panel: Spectra accroding to the titanium content of
         the ejecta.
         The top set of spectra assume the same brightness of SN 2011fe at max,
         whereas the bottom set assumes a quarter of that value.
         """ 
+
         cmap_Ti = cmaps.plasma      
         Norm_Ti = colors.Normalize(vmin=0., vmax=len(self.list_pkl_bright) + 5.)
 
         models = ['20', '10', '5', '2', '1', '0.5', '0.2',
                   '0.1', '0.05', '0']    
         
-        offset_lvl_Ti = -2.
+        offset_Ti = -2.
                     
         T_bright, T_faint = [], []
         for i, pkl in enumerate(self.list_pkl_bright):      
-            wavelength = (np.asarray(pkl['wavelength_raw'].tolist()[0])
-                          .astype(np.float))
-                       
-            flux_raw = (np.asarray(pkl['flux_normalized'].tolist()[0])
-                        .astype(np.float) + 2. + offset_lvl_Ti * i)
+            
+            wavelength = pkl['wavelength_corr']
+            flux_raw = pkl['flux_normalized'] + 2. + offset_Ti * i
             
             selection = (wavelength >= 1500.) & (wavelength <= 8900.)
 
@@ -240,14 +234,12 @@ class L_Grid(object):
                 self.ax2.text(1700, text_lvl, r'$L=L_{\mathrm{11fe,max}}$',
                 fontsize=20., horizontalalignment='left', color='k')              
             
-            T_bright.append(pkl['t_inner'][0])
+            T_bright.append(pkl['t_inner'].value)
 
         for i, pkl in enumerate(self.list_pkl_faint):           
-            wavelength = (np.asarray(pkl['wavelength_raw'].tolist()[0])
-                          .astype(np.float))
             
-            flux_raw = (np.asarray(pkl['flux_normalized'].tolist()[0])
-                        .astype(np.float) - 19. + offset_lvl_Ti * i)
+            wavelength = pkl['wavelength_corr']
+            flux_raw = pkl['flux_normalized'] - 19. + offset_Ti * i
             
             selection = (wavelength >= 1500.) & (wavelength <= 8900.)
 
@@ -270,25 +262,25 @@ class L_Grid(object):
                 r'$L=\mathrm{0.25}L_{\mathrm{11fe,max}}$',
                 fontsize=20., horizontalalignment='left', color='k') 
 
-            T_faint.append(pkl['t_inner'][0])
+            T_faint.append(pkl['t_inner'].value)
 
         print ('\n\n\nMean Temperature for brigther and fainter models:',
                np.mean(T_bright), np.mean(T_faint))
         print ('\n\n\nTypical temperature difference for Ti models at high and'
                + ' low brightnesses: ', np.mean(np.asarray(
                [T1-T2 for (T1,T2) in zip(T_bright,T_faint)])))
-            
+
     def save_figure(self, extension='pdf', dpi=360):
                 
         directory = './../OUTPUT_FILES/FIGURES/'
         if self.save_fig:
             if self.show_pEW:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
-                            + self.line_mode + '_L_and_Ti_grid_pEW.'
+                            + self.lm + '_L_and_Ti_grid_pEW.'
                             + extension)
             else:
                 filename = (directory + 'Fig_' + self.left_panel + '_'
-                            + self.line_mode + '_L_and_Ti_grid.' + extension)         
+                            + self.lm + '_L_and_Ti_grid.' + extension)         
             plt.savefig(filename, format=extension, dpi=dpi)
         
     def show_figure(self):
@@ -303,26 +295,25 @@ class L_Grid(object):
         self.save_figure()
         self.show_figure()  
 
-#compare_spectra_object = L_Grid(line_mode='downbranch', left_panel='11fe',
-#                                show_pEW=True, show_fig=True, save_fig=False)
-
+#compare_spectra_object = L_Grid(lm='downbranch', left_panel='11fe',
+#                                show_pEW=False, show_fig=False, save_fig=True)
 
 #Run and save all options
-
-compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='11fe',
+'''
+compare_spectra_object = L_Grid(lm='downbranch',left_panel='11fe',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='11fe',
+compare_spectra_object = L_Grid(lm='downbranch',left_panel='11fe',
                                 show_pEW=True, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='05bl',
+compare_spectra_object = L_Grid(lm='downbranch',left_panel='05bl',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='downbranch',left_panel='05bl',
+compare_spectra_object = L_Grid(lm='downbranch',left_panel='05bl',
                                 show_pEW=True, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='11fe',
+compare_spectra_object = L_Grid(lm='macroatom',left_panel='11fe',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='11fe',
+compare_spectra_object = L_Grid(lm='macroatom',left_panel='11fe',
                                 show_pEW=True, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='05bl',
+compare_spectra_object = L_Grid(lm='macroatom',left_panel='05bl',
                                 show_pEW=False, show_fig=False, save_fig=True)
-compare_spectra_object = L_Grid(line_mode='macroatom',left_panel='05bl',
+compare_spectra_object = L_Grid(lm='macroatom',left_panel='05bl',
                                 show_pEW=True, show_fig=False, save_fig=True)
-
+'''

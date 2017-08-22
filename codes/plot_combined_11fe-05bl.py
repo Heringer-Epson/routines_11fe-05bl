@@ -32,11 +32,11 @@ class Compare_Spectra(object):
     models with observations.
     """
     
-    def __init__(self, line_mode='downbranch', show_fig=True, save_fig=False):
+    def __init__(self, lm='downbranch', show_fig=True, save_fig=False):
         
         self.list_pkl, self.label = [], []    
 
-        self.line_mode = line_mode
+        self.lm = lm
         self.show_fig = show_fig
         self.save_fig = save_fig
                
@@ -102,10 +102,10 @@ class Compare_Spectra(object):
         path_obs_11fe = './../INPUT_FILES/observational_spectra/2011fe/'
         path_obs_05bl = './../INPUT_FILES/observational_spectra/2005bl/'
 
-        def get_path(event, v, L, line_mode, texp): 
+        def get_path(event, v, L, lm, texp): 
             case_folder = path_tardis_output + event + '_default_L-scaled/'
             filename = ('velocity_start-' + v + '_loglum-' + L + '_line_'
-                    + 'interaction-' + line_mode + '_time_explosion-' + texp)
+                    + 'interaction-' + lm + '_time_explosion-' + texp)
             path_sufix = filename + '/' + filename + '.pkl'
             return case_folder + path_sufix
                                                           
@@ -113,13 +113,13 @@ class Compare_Spectra(object):
 
         #t_exp = 12.1 - standard
         aux = [path_obs_11fe + '2011_09_03.pkl',
-               get_path('11fe', '10700', '9.362', self.line_mode, '12.1'),
-               get_path('11fe', '10700', '9.061', self.line_mode, '12.1'),     
-               get_path('11fe', '10700', '8.880', self.line_mode, '12.1'),     
+               get_path('11fe', '10700', '9.362', self.lm, '12.1'),
+               get_path('11fe', '10700', '9.061', self.lm, '12.1'),     
+               get_path('11fe', '10700', '8.880', self.lm, '12.1'),     
                path_obs_05bl + '2005_04_17.pkl',
-               get_path('11fe', '10700', '8.760', self.line_mode, '12.1'),     
+               get_path('11fe', '10700', '8.760', self.lm, '12.1'),     
                path_obs_05bl + '2005_04_17.pkl',
-               get_path('05bl', '8100', '8.617', self.line_mode, '12.0'),     
+               get_path('05bl', '8100', '8.617', self.lm, '12.0'),     
                path_obs_05bl + '2005_04_17.pkl']                    
         
         for pkl_path in aux:
@@ -128,13 +128,13 @@ class Compare_Spectra(object):
 
         #t_exp = 19.1 - standard.
         aux = [path_obs_11fe + '2011_09_10.pkl',
-               get_path('11fe', '7850', '9.544', self.line_mode, '19.1'),
-               get_path('11fe', '7850', '9.243', self.line_mode, '19.1'),
-               get_path('11fe', '7850', '9.063', self.line_mode, '19.1'),
+               get_path('11fe', '7850', '9.544', self.lm, '19.1'),
+               get_path('11fe', '7850', '9.243', self.lm, '19.1'),
+               get_path('11fe', '7850', '9.063', self.lm, '19.1'),
                path_obs_05bl + '2005_04_26.pkl',
-               get_path('11fe', '7850', '8.942', self.line_mode, '19.1'),
+               get_path('11fe', '7850', '8.942', self.lm, '19.1'),
                path_obs_05bl + '2005_04_26.pkl',
-               get_path('05bl', '6800', '8.861', self.line_mode, '21.8'),
+               get_path('05bl', '6800', '8.861', self.lm, '21.8'),
                path_obs_05bl + '2005_04_26.pkl']        
                 
         for pkl_path in aux:
@@ -143,13 +143,13 @@ class Compare_Spectra(object):
 
         #t_exp = 28.3 - standard.  
         aux = [path_obs_11fe + '2011_09_19.pkl',
-               get_path('11fe', '4550', '9.362', self.line_mode, '28.3'),
-               get_path('11fe', '4550', '9.061', self.line_mode, '28.3'),
-               get_path('11fe', '4550', '8.880', self.line_mode, '28.3'),
+               get_path('11fe', '4550', '9.362', self.lm, '28.3'),
+               get_path('11fe', '4550', '9.061', self.lm, '28.3'),
+               get_path('11fe', '4550', '8.880', self.lm, '28.3'),
                path_obs_05bl + '2005_05_04.pkl',
-               get_path('11fe', '4550', '8.760', self.line_mode, '28.3'),
+               get_path('11fe', '4550', '8.760', self.lm, '28.3'),
                path_obs_05bl + '2005_05_04.pkl',
-               get_path('05bl', '3350', '8.594', self.line_mode, '29.9'),
+               get_path('05bl', '3350', '8.594', self.lm, '29.9'),
                path_obs_05bl + '2005_05_04.pkl']        
                 
         for pkl_path in aux:
@@ -160,13 +160,13 @@ class Compare_Spectra(object):
 
         #t_exp = 12
         aux = [path_obs_11fe + '2011_09_03.pkl',
-               get_path('11fe', '10700', '9.362', self.line_mode, '12.1'),
+               get_path('11fe', '10700', '9.362', self.lm, '12.1'),
                path_obs_11fe + '2011_09_03.pkl',                                                                                                                                            
-               get_path('05bl', '8100', '9.219', self.line_mode, '12.0'),
+               get_path('05bl', '8100', '9.219', self.lm, '12.0'),
                path_obs_11fe + '2011_09_03.pkl',                                                                                                                                           
-               get_path('05bl', '8100', '9.094', self.line_mode, '12.0'),
-               get_path('05bl', '8100', '8.918', self.line_mode, '12.0'),
-               get_path('05bl', '8100', '8.617', self.line_mode, '12.0'),
+               get_path('05bl', '8100', '9.094', self.lm, '12.0'),
+               get_path('05bl', '8100', '8.918', self.lm, '12.0'),
+               get_path('05bl', '8100', '8.617', self.lm, '12.0'),
                path_obs_05bl + '2005_04_17.pkl']        
                 
         for pkl_path in aux:
@@ -175,13 +175,13 @@ class Compare_Spectra(object):
 
         #t_exp = 21.8
         aux = [path_obs_11fe + '2011_09_10.pkl',
-               get_path('11fe', '7850', '9.544', self.line_mode, '19.1'),
+               get_path('11fe', '7850', '9.544', self.lm, '19.1'),
                path_obs_11fe + '2011_09_10.pkl',                                                                                                                                            
-               get_path('05bl', '6800', '9.463', self.line_mode, '21.8'),
+               get_path('05bl', '6800', '9.463', self.lm, '21.8'),
                path_obs_11fe + '2011_09_10.pkl',                                                                                                                                           
-               get_path('05bl', '6800', '9.338', self.line_mode, '21.8'),
-               get_path('05bl', '6800', '9.162', self.line_mode, '21.8'),
-               get_path('05bl', '6800', '8.861', self.line_mode, '21.8'),
+               get_path('05bl', '6800', '9.338', self.lm, '21.8'),
+               get_path('05bl', '6800', '9.162', self.lm, '21.8'),
+               get_path('05bl', '6800', '8.861', self.lm, '21.8'),
                path_obs_05bl + '2005_04_26.pkl']        
                 
         for pkl_path in aux:
@@ -190,13 +190,13 @@ class Compare_Spectra(object):
 
         #t_exp = 28.3 - standard.
         aux = [path_obs_11fe + '2011_09_19.pkl',
-               get_path('11fe', '4550', '9.362', self.line_mode, '28.3'),
+               get_path('11fe', '4550', '9.362', self.lm, '28.3'),
                path_obs_11fe + '2011_09_19.pkl',                                                                                                                                            
-               get_path('05bl', '3350', '9.196', self.line_mode, '29.9'),
+               get_path('05bl', '3350', '9.196', self.lm, '29.9'),
                path_obs_11fe + '2011_09_19.pkl',                                                                                                                                           
-               get_path('05bl', '3350', '9.071', self.line_mode, '29.9'),
-               get_path('05bl', '3350', '8.895', self.line_mode, '29.9'),
-               get_path('05bl', '3350', '8.594', self.line_mode, '29.9'),
+               get_path('05bl', '3350', '9.071', self.lm, '29.9'),
+               get_path('05bl', '3350', '8.895', self.lm, '29.9'),
+               get_path('05bl', '3350', '8.594', self.lm, '29.9'),
                path_obs_05bl + '2005_05_04.pkl']        
                 
         for pkl_path in aux:
@@ -271,7 +271,7 @@ class Compare_Spectra(object):
                     text_lvl = mean_flux(wavelength, flux_normalized, 1500., 2500.)
                     self.ax1.text(
                       1700, text_lvl + offset_text - 0.15,
-                      r'$\mathrm{' + str(format(pkl['t_inner'][0] ,'.0f')) + ' \ K}$',
+                      r'$\mathrm{' + str(format(pkl['t_inner'].value ,'.0f')) + ' \ K}$',
                       fontsize=20., horizontalalignment='left', color=color[i])
                 except:
                     pass   
@@ -353,7 +353,7 @@ class Compare_Spectra(object):
             for i, pkl in enumerate(pkl_set): 
                  
                 #Plot spectrum
-                wavelength = pkl['wavelength_raw']
+                wavelength = pkl['wavelength_corr']
                 flux_normalized = (pkl['flux_normalized'] + offset[i]
                                    + pkl_offset_scaling[l] * offset_lvl)   
                 self.ax2.plot(wavelength, flux_normalized, color=color[i],
@@ -364,7 +364,7 @@ class Compare_Spectra(object):
                     text_lvl = mean_flux(wavelength, flux_normalized, 1500., 2500.)
                     self.ax2.text(
                       1700, text_lvl + offset_text - 0.15,
-                      r'$\mathrm{' + str(format(pkl['t_inner'][0] ,'.0f')) + ' \ K}$',
+                      r'$\mathrm{' + str(format(pkl['t_inner'].value ,'.0f')) + ' \ K}$',
                       fontsize=20., horizontalalignment='left', color=color[i])
                 except:
                     pass   
@@ -419,7 +419,7 @@ class Compare_Spectra(object):
         if self.save_fig:
             plt.savefig('./../OUTPUT_FILES/FIGURES/'
                         + 'Fig_combined_11fe_05bl_transition_'
-                        + self.line_mode + '.' + extension, format=extension,
+                        + self.lm + '.' + extension, format=extension,
                         dpi=dpi)
         
     def show_figure(self):
@@ -433,13 +433,13 @@ class Compare_Spectra(object):
         self.plotting_11fe_to_05bl()
         self.plotting_05bl_to_11fe()
         self.add_legend()
-        #self.print_velocity()
+        self.print_velocity()
         self.save_figure()
         self.show_figure()  
 
 
-compare_spectra_object = Compare_Spectra(line_mode='downbranch',
-                                         show_fig=True, save_fig=False)
-#compare_spectra_object = Compare_Spectra(line_mode='macroatom',
-#                                         show_fig=False, save_fig=True)
+compare_spectra_object = Compare_Spectra(lm='downbranch',
+                                         show_fig=False, save_fig=True)
+compare_spectra_object = Compare_Spectra(lm='macroatom',
+                                         show_fig=False, save_fig=True)
 
