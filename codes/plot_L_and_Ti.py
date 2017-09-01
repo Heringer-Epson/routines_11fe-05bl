@@ -175,7 +175,7 @@ class L_Grid(object):
 
             #Draw pEW region, if requested.
             if self.show_pEW:
-                for key,color in zip(['6', '7'],['b','r']):
+                for key, color in zip(['6', '7', 'C'],['b','r', 'g']):
                     try:
                         wavelength_region = pkl['wavelength_region_f' + key]
                         
@@ -295,8 +295,8 @@ class L_Grid(object):
         self.save_figure()
         self.show_figure()  
 
-#compare_spectra_object = L_Grid(lm='downbranch', left_panel='11fe',
-#                                show_pEW=False, show_fig=False, save_fig=True)
+compare_spectra_object = L_Grid(lm='downbranch', left_panel='11fe',
+                                show_pEW=True, show_fig=True, save_fig=False)
 
 #Run and save all options
 '''

@@ -387,15 +387,6 @@ class BSNIP_Database(object):
         self.compute_observables()
         self.save_output()
 
-BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=True)
-#BSNIP_object = BSNIP_Database(filename='BSNIP2', make_figures=False)
-#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=[333], make_figures=False)
-
-#BSNIP_object = BSNIP_Database(filename='BSNIP2', subset_objects_idx=np.arange(350,380,1), make_figures=True)
-
-
-#BSNIP_object = BSNIP_Database(filename='BSNIP_test', subset_objects_idx=np.arange(136,141,1), make_figures=False)
-
-#BSNIP_object = BSNIP_Database(subset_objects_idx=np.arange(100,200,1),
-#                              make_figures=True)
+#BSNIP_object = BSNIP_Database(filename='BSNIP', make_figures=True)
+BSNIP_object = BSNIP_Database(filename='BSNIP-test', make_figures=False)
 

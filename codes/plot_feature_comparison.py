@@ -217,11 +217,11 @@ class Compare_Feature(get_BSNIP):
         self.save_figure(extension='pdf')
         self.show_figure()
         
-Compare_Feature(feature='pEW', key='7', feature_range=[0., 200.],
-                show_fig=True, save_fig=False) 
+#Compare_Feature(feature='pEW', key='7', feature_range=[0., 200.],
+#                show_fig=True, save_fig=False) 
 
-#Compare_Feature(feature='pEW', key='6', feature_range=[0., 70.],
-#                show_fig=True, save_fig=False)                                      
+Compare_Feature(feature='pEW', key='6', feature_range=[0., 70.],
+                show_fig=True, save_fig=False)                                      
 
 #Compare_Feature(feature='depth', key='7', feature_range=[0., 1.],
 #                show_fig=True, save_fig=False) 
