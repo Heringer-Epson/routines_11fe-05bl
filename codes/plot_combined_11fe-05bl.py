@@ -103,9 +103,14 @@ class Compare_Spectra(object):
         path_obs_05bl = './../INPUT_FILES/observational_spectra/2005bl/'
 
         def get_path(event, v, L, lm, texp): 
-            case_folder = path_tardis_output + event + '_default_L-scaled/'
-            filename = ('velocity_start-' + v + '_loglum-' + L + '_line_'
-                    + 'interaction-' + lm + '_time_explosion-' + texp)
+            if event == '05bl':
+                case_folder = path_tardis_output + event + '_default_L-scaled/'
+                filename = ('velocity_start-' + v + '_loglum-' + L + '_line_'
+                        + 'interaction-' + lm + '_time_explosion-' + texp)
+            elif event == '11fe':    
+                case_folder = path_tardis_output + event + '_default_L-scaled_UP/'
+                filename = ('line_interaction-' + lm + '_loglum-' + L
+                            + '_velocity_start-' + v + '_time_explosion-' + texp)
             path_sufix = filename + '/' + filename + '.pkl'
             return case_folder + path_sufix
                                                           
@@ -419,7 +424,7 @@ class Compare_Spectra(object):
         if self.save_fig:
             plt.savefig('./../OUTPUT_FILES/FIGURES/'
                         + 'Fig_combined_11fe_05bl_transition_'
-                        + self.lm + '.' + extension, format=extension,
+                        + self.lm + '_UP.' + extension, format=extension,
                         dpi=dpi)
         
     def show_figure(self):
@@ -437,9 +442,11 @@ class Compare_Spectra(object):
         self.save_figure()
         self.show_figure()  
 
-
 compare_spectra_object = Compare_Spectra(lm='downbranch',
-                                         show_fig=False, save_fig=True)
-compare_spectra_object = Compare_Spectra(lm='macroatom',
-                                         show_fig=False, save_fig=True)
+                                         show_fig=True, save_fig=True)
+
+#compare_spectra_object = Compare_Spectra(lm='downbranch',
+#                                         show_fig=False, save_fig=True)
+#compare_spectra_object = Compare_Spectra(lm='macroatom',
+#                                         show_fig=False, save_fig=True)
 

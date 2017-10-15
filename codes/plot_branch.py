@@ -411,6 +411,6 @@ class Feature_Parspace(Get_BSNIP):
 
 parspace_object = Feature_Parspace(lm='downbranch', show_fig=False,
                                    save_fig=True)
-parspace_object = Feature_Parspace(lm='macroatom', show_fig=False,
-                                   save_fig=True)
+#parspace_object = Feature_Parspace(lm='macroatom', show_fig=False,
+#                                   save_fig=True)
 
